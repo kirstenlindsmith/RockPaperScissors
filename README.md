@@ -7,7 +7,7 @@ How to Run: ** MUST HAVE XCODE INSTALLED ***
 
 2.) Open "Space Invaders.xcodeproj" project file 
 
-3.) Select running device or phone simulator on top left
+3.) Select device to download to or phone simulator on top left
 
 4.) Click play button in top left 
 
