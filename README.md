@@ -13,5 +13,5 @@ How to Run: ** MUST HAVE XCODE INSTALLED ***
 
 5.) Play the game!
 
-<img src = "images/background_git.png" width = "100" height = "20">
+<img src = "images/background_git.png" width = "500" height = "500">
 
