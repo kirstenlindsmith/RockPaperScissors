@@ -13,4 +13,5 @@ How to Run: ** MUST HAVE XCODE INSTALLED ***
 
 5.) Play the game!
 
-/Users/franciscofranco/Desktop/ship_git.png
+
+![](images/background_git.png)          ![](images/ship_git.png)          ![](images/explosion_git.png)
