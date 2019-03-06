@@ -12,3 +12,6 @@ How to Run: ** MUST HAVE XCODE INSTALLED ***
 4.) Click play button in top left 
 
 5.) Play the game!
+
+
+"/Users/franciscofranco/Desktop/ship_git.png"
