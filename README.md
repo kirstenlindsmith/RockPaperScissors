@@ -1,7 +1,7 @@
 # Space-Invaders
 IOS app written in swift that mimics the classic arcade game "Space Invaders"
 
-How to Run: ** MUST HAVE XCODE INSTALLED ***
+How to Run: *** MUST HAVE XCODE INSTALLED ***
 
 1.) Download Space Invaders folder with all included files
 
