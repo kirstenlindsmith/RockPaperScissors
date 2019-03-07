@@ -5,11 +5,11 @@ How to Run: *** MUST HAVE XCODE INSTALLED ***
 
 1.) Download Space Invaders folder with all included files
 
-2.) Open "Space Invaders.xcodeproj" project file 
+2.) Open "Space Invaders.xcodeproj" project file in XCode
 
-3.) Select device to download to or phone simulator on top left
+3.) Select device to download to or phone simulator in top left
 
-4.) Click play button in top left 
+4.) Click play/run button in top left 
 
 5.) Play the game!
 
