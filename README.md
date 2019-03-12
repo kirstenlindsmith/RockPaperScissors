@@ -13,5 +13,5 @@ How to Run: *** MUST HAVE XCODE INSTALLED ***
 
 5.) Play the game!
 
-<img src = "images/ship_git.png" width = "300" height = "600">  <img src = "images/shootingEnemy_git.png" width = "300" height = "600">
+<img src = "images/main_menu.png" width = "300" height = "600">  <img src = "images/begin.png" width = "300" height = "600">
 
