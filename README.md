@@ -15,4 +15,4 @@ How to Run: *** MUST HAVE XCODE INSTALLED ***
 
 <img src = "images/main_menu.png" width = "310" height = "550">  <img src = "images/begin.png" width = "310" height = "550">
 
-<img src = "images/shooting.png" width = "320" height = "530">  <img src = "images/life_enemy.png" width = "310" height = "545">
+<img src = "images/shooting.png" width = "320" height = "530">  <img src = "images/life_enemy.png" width = "310" height = "550">
