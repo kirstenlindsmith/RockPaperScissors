@@ -13,6 +13,6 @@ How to Run: *** MUST HAVE XCODE INSTALLED ***
 
 5.) Play the game!
 
-<img src = "images/main_menu.png" width = "310" height = "550">  <img src = "images/begin.png" width = "340" height = "500">
+<img src = "images/main_menu.png" width = "310" height = "550">  <img src = "images/begin.png" width = "310" height = "550">
 
 <img src = "images/shooting.png" width = "320" height = "500">  <img src = "images/life_enemy.png" width = "320" height = "500">
