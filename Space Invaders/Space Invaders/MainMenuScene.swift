@@ -1,11 +1,3 @@
-//
-//  MainMenuScene.swift
-//  Space Invaders
-//
-//  Created by Francisco Franco on 3/11/19.
-//  Copyright © 2019 Francisco Franco. All rights reserved.
-//
-
 import Foundation
 import SpriteKit
 
@@ -15,39 +7,39 @@ class MainMenuScene: SKScene
     
     override func didMove(to view: SKView)
     {
-        let background = SKSpriteNode(imageNamed: "background")
-//        background.size = self.size
-        background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        background.zPosition = 0;
-        self.addChild(background);
-        
-        let creator = SKLabelNode(fontNamed: "the bold font")
-        creator.text = "Francisco's"
-        creator.fontSize = 50
-        creator.fontColor = SKColor.white
-        creator.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.78)
-        creator.zPosition = 1
-        self.addChild(creator)
+        // let background = SKSpriteNode(imageNamed: "background")
+        // background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        // background.zPosition = 0;
+        // self.addChild(background); //TODO: background image for start screen
+        self.backgroundColor = SKColor.white;
         
         let gameName1 = SKLabelNode(fontNamed: "the bold font")
-        gameName1.text = "Space"
-        gameName1.fontSize = 200
-        gameName1.fontColor = SKColor.white
-        gameName1.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.7)
+        gameName1.text = "Rock"
+        gameName1.fontSize = 160
+        gameName1.fontColor = SKColor.black
+        gameName1.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.78)
         gameName1.zPosition = 1
         self.addChild(gameName1)
         
         let gameName2 = SKLabelNode(fontNamed: "the bold font")
-        gameName2.text = "Invaders"
-        gameName2.fontSize = 200
-        gameName2.fontColor = SKColor.white
-        gameName2.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.620)
+        gameName2.text = "Paper"
+        gameName2.fontSize = 180
+        gameName2.fontColor = SKColor.black
+        gameName2.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.7)
         gameName2.zPosition = 1
         self.addChild(gameName2)
         
-        startGame.text = "Start Game"
+        let gameName3 = SKLabelNode(fontNamed: "the bold font")
+        gameName3.text = "Scissors"
+        gameName3.fontSize = 200
+        gameName3.fontColor = SKColor.black
+        gameName3.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.620)
+        gameName3.zPosition = 1
+        self.addChild(gameName3)
+        
+        startGame.text = "START GAME"
         startGame.fontSize = 150
-        startGame.fontColor = SKColor.white
+        startGame.fontColor = SKColor.black
         startGame.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.4)
         startGame.zPosition = 1
         startGame.name = "startButton"
