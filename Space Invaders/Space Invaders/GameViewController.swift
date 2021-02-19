@@ -13,27 +13,27 @@ import AVFoundation
 
 class GameViewController: UIViewController {
     
-    var backingAudio = AVAudioPlayer()
+    // var backingAudio = AVAudioPlayer()
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         // creates file path for game sound track
-        let filePath = Bundle.main.path(forResource: "Superboy", ofType: "mp3")
-        let audioNSURL = NSURL(fileURLWithPath: filePath!)
+        // let filePath = Bundle.main.path(forResource: "Superboy", ofType: "mp3")
+        // let audioNSURL = NSURL(fileURLWithPath: filePath!)
         
-        do
-        {
-            backingAudio = try AVAudioPlayer(contentsOf: audioNSURL as URL)
-        }
-        catch
-        {
-            return print ("Cannot find audio file")
-        }
+        // do
+        // {
+        //     backingAudio = try AVAudioPlayer(contentsOf: audioNSURL as URL)
+        // }
+        // catch
+        // {
+        //     return print ("Cannot find audio file")
+        // }
         
-        backingAudio.numberOfLoops = -1
-        backingAudio.play()
+        // backingAudio.numberOfLoops = -1 //infinite loop
+        // backingAudio.play()
         
         
         if let view = self.view as! SKView? {
