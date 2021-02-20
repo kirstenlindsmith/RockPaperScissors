@@ -1,6 +1,6 @@
 # Changelog
 
--
+---
 
 ## 02192021
 
@@ -10,7 +10,9 @@
 
 ### Changed
 
-- none
+- start screen
+- main attribute names
+- game over screen
 
 ### Removed
 

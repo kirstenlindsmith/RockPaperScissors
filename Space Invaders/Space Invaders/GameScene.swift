@@ -1,50 +1,32 @@
-//
-//  GameScene.swift
-//  Space Invaders
-//
-//  Created by Francisco Franco on 3/2/19.
-//  Copyright © 2019 Francisco Franco. All rights reserved.
-//
-
-// TO DO:
-// 1.) fix bug that increases lifes when heart passes player
-// 2.)
-// 3.)
-// 4.)
-// 5.)
-
 import SpriteKit
 import GameplayKit
 
-// global variable that keep game score
-var gameScore = 0
+// global variables that keep track of the game
+var winner = "¯|_(ツ)_/¯";
+let predatorSpeed:CGFloat = 3.0
+var population: Int = 60
+var rockPopulation: Int = population/3
+var paperPopulation: Int = population/3
+var scissorsPopulation: Int = population/3
 
-class GameScene: SKScene, SKPhysicsContactDelegate
-{
-    // label used to display score
-    let scoreLabel = SKLabelNode(fontNamed: "the bold font")
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
+    // label to track game state
+    let winnerLabel = SKLabelNode(fontNamed: "the bold font")
     
-    // variable that keeps current level and label used to display level
-    var level = 0
-    let levelLabel = SKLabelNode(fontNamed: "the bold font") // implement
+    // creating nodes that represents the rock, paper, and scissors
+    // let rock = SKSpriteNode(imageNamed: "rock")
+    // let paper = SKSpriteNode(imageNamed: "paper")
+    // let scissors = SKSpriteNode(imageNamed: "scissors")
     
-    // variable that keeps number of current lives and label used to display level
-    var livesNumber = 3
-    let livesLabel = SKLabelNode(fontNamed: "the bold font")
-    
-    // creating a node that represents the players ship
-    let player = SKSpriteNode(imageNamed: "ship")
-    
-    let bulletSound = SKAction.playSoundFileNamed("laser.wav", waitForCompletion: false)
-    
+    // sound effect
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
     
     // Label that starts game when pressed
     let tapToStartLabel = SKLabelNode(fontNamed: "the bold font")
     
     
-    enum gameState
-    {
+    enum gameState {
         case preGame // prior to game start
         case inGame // when game state is during the game
         case afterGame // when game finishes
@@ -53,32 +35,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     var currentGameState = gameState.preGame
     
     // setting physics of objects for later use
-    struct physicsCategories
-    {
-        static let None : UInt32 = 0
-        static let Player : UInt32 = 0b1 // 1
-        static let Bullet : UInt32 = 0b10 // 2
-        static let Enemy : UInt32 = 0b100 // 4
-        static let NewLife : UInt32 = 0b101 // 5
-        static let PowerUp : UInt32 = 0b110  // 6
+    struct BodyType {
+        static let Rock : UInt32 = 0b1 // 1
+        static let Paper : UInt32 = 0b10 // 2
+        static let Scissors : UInt32 = 0b100 // 4
     }
     
     // random utility functions that produce random locations
-    func random() -> CGFloat
-    {
+    func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
     }
     
-    func random (min: CGFloat, max: CGFloat) -> CGFloat
-    {
+    func random (min: CGFloat, max: CGFloat) -> CGFloat {
         return random() * (max - min) + min
     }
     
     
     // creating game area
     let gameArea: CGRect
-    override init(size: CGSize)
-    {
+    override init(size: CGSize) {
 
         let maxAspectRatio: CGFloat = 16.0 / 9.0;
         let playableWidth = size.height / maxAspectRatio
@@ -94,213 +69,182 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     }
     
     
-    override func didMove(to view: SKView)
-    {
-        // set game score
-        gameScore = 0
+    override func didMove(to view: SKView) {
+        // set initial game state
+        winner = "¯|_(ツ)_/¯"
         
-        self.physicsWorld.contactDelegate = self
+        self.physicsWorld.contactDelegate = self;
+        // prevent anything from leaving the pen
+        let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        borderBody.friction = 0
+        self.physicsBody = borderBody
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0);
+
+        self.backgroundColor = SKColor.white;
         
-    
-        // creates 2 backgrounds used for the scrolling background
-        for i in 0...1
-        {
-            let background = SKSpriteNode(imageNamed: "background")
-            background.size = self.size
-            background.anchorPoint = CGPoint(x: 0.5 , y: 0)
-            background.position = CGPoint(x: self.size.width/2, y: self.size.height * CGFloat(i))
-            background.zPosition = 0;
-            background.name = "Background"
-            self.addChild(background);
-        }
+        // setting all of winnerLabel"s attributes and physics
+        winnerLabel.text = "In the lead: "
+        winnerLabel.fontSize = 70
+        winnerLabel.fontColor = SKColor.black
+        winnerLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        winnerLabel.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.9)
+        winnerLabel.zPosition = 100
+        self.addChild(winnerLabel)
         
-        // setting all of the players attributes and physics
-        player.setScale(0.6); //size of ship
-        player.position = CGPoint(x: self.size.width/2 , y: 0 - player.size.height)
-        player.zPosition = 2
-        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
-        player.physicsBody!.affectedByGravity = false
-        player.physicsBody!.categoryBitMask = physicsCategories.Player
-        player.physicsBody!.collisionBitMask = physicsCategories.None
-        player.physicsBody!.contactTestBitMask = physicsCategories.Enemy
-        self.addChild(player)
-        
-        // setting all of ScoreLabel's attributes and physics
-        scoreLabel.text = "Score: 0"
-        scoreLabel.fontSize = 70
-        scoreLabel.fontColor = SKColor.white
-        scoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        scoreLabel.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.9)
-        scoreLabel.zPosition = 100
-        self.addChild(scoreLabel)
-        
-        // setting all of livesLabel's attributes and physics
-        livesLabel.text = "Lives: 3"
-        livesLabel.fontSize = 70
-        livesLabel.fontColor = SKColor.white
-        livesLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
-        livesLabel.position = CGPoint(x: self.size.width * 0.76, y: self.size.height * 0.9)
-        livesLabel.zPosition = 100
-        self.addChild(livesLabel)
-        
-        // setting all of tapToStartLabel's attributes and physics
+        // setting all of tapToStartLabel"s attributes and physics
         tapToStartLabel.text = "Tap To Begin"
         tapToStartLabel.fontSize = 100
-        tapToStartLabel.fontColor = SKColor.white
+        tapToStartLabel.fontColor = SKColor.black
         tapToStartLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
         tapToStartLabel.position = CGPoint(x: self.size.width/1.45, y: self.size.height/2)
         tapToStartLabel.zPosition = 1
         tapToStartLabel.alpha = 0
         self.addChild(tapToStartLabel)
         
-        // makes everything fade onto the scene for looks
+        // makes everything fade onto the scene
         let fadeInAction = SKAction.fadeIn(withDuration: 0.3)
         tapToStartLabel.run(fadeInAction)
-        
+    }
+
+    func cyclePredators() {
+        enumerateChildNodes(withName: "*//*") { (predator, stop) in
+            // rotate and move to new location
+            let randomNewX = Int(predator.position.x) + Int.random(in: 0...30)
+            let randomNewY = Int(predator.position.y) + Int.random(in: 0...30)
+            let yDifference = randomNewY - Int(predator.position.y)
+            let xDifference = randomNewX - Int(predator.position.x)
+            let angleBetween = atan2(yDifference, xDifference)
+            let xVelocity = cos(angleBetween) * predatorSpeed
+            let yVelocity = sin(angleBetween) * predatorSpeed
+            predator.zRotation = angleBetween
+            predator.position.x = CGFloat(randomNewX)
+            predator.position.y = CGFloat(randomNewY)
+            // predator.xVelocity = xVelocity
+            // predator.yVelocity = yVelocity
+            
+            // let minX = Float(predator.frame.minX)
+            // let minY = Float(predator.frame.minY)
+            // let maxX = Float(predator.frame.maxX)
+            // let maxY = Float(predator.frame.maxY)
+
+            // let neighborsTree = GKRTree(maxNumberOfChildren: 3)
+            // neighborsTree.addElement(
+            //     predator,
+            //     boundingRectMin: vector2(minX, minY),
+            //     boundingRectMax: vector2(maxX, maxY),
+            //     splitStrategy: GKRTreeSplitStrategy.linear
+            // )
+            // let neighborsInProximity = neighborsTree.elements(
+            //      inBoundingRectMin: vector2(minX, minY),
+            //     rectMax: vector2(maxX, maxY)
+            //     // inBoundingRectMin: vector2(Float(predator.position.x - 100), Float(predator.position.y - 50)),
+            //     // rectMax: vector2(Float(predator.position.x + 50), Float(predator.position.y + 50))
+            // )
+
+            // for neighbor in neighborsInProximity {
+            //     if (
+            //         predator.name == "rock" && (neighbor as! SKNode).name == "scissors" ||
+            //         predator.name == "paper" && (neighbor as! SKNode).name == "rock" ||
+            //         predator.name == "scissors" && (neighbor as! SKNode).name == "paper"
+            //     ) {
+            //         //rotate towards the prey
+                    // let yDifference = (neighbor as! SKNode).position.y - predator.position.y
+                    // let xDifference = (neighbor as! SKNode).position.x - predator.position.x
+                    // let angleBetween = atan2(yDifference, xDifference)
+                    // predator.zRotation = angleBetween
+            //         //move towards the prey
+                    // let xVelocity = cos(angleBetween) * predatorSpeed
+                    // let yVelocity = sin(angleBetween) * predatorSpeed
+            //         predator.position.x += xVelocity
+            //         predator.position.y += yVelocity
+            //     }
+            // }
+        }
     }
     
-    // used to determine when to scroll background
-    var lastUpdateTime: TimeInterval = 0
-    var deltaFrameTime: TimeInterval = 0
-    var movePerSecond: CGFloat = 600.0 // use this to make background scroll faster when levels change or something?...
-    
-    //  runs once per game frame, and we are using it to move our background to make it scroll
-    override func update(_ currentTime: TimeInterval)
-    {
-        // change, find better implementation
-        // creating a 1% chance of spawning a new a life every game frame
-        let num = Int.random(in: 1 ... 400)
-        
-        if num == 1
-        {
-            spawnNewLife()
-        }
-        
-        else if num == 2
-        {
-            //spawnPowerUp()
-        }
-        
-        
-        if lastUpdateTime == 0
-        {
-            lastUpdateTime = currentTime
-        }
-        else
-        {
-            deltaFrameTime = currentTime - lastUpdateTime
-            lastUpdateTime = currentTime
-        }
-        
-        let amountToMoveBackground = movePerSecond * CGFloat(deltaFrameTime)
-        
-        self.enumerateChildNodes(withName: "Background")
-        {
-            background, stop in
-            
-            // only scroll background when we are in game
-            if self.currentGameState == gameState.inGame
-            {
-                background.position.y -= amountToMoveBackground
-            }
-            
-            // once the background goes off the bottom of screen, put it back at the top for scrolling
-            if background.position.y < -self.size.height
-            {
-                background.position.y += self.size.height * 2
-            }
-        }
-    
+  
+    //  runs once per game frame
+    override func update(_ currentTime: TimeInterval) {
+        cyclePredators()
+        // creating a small chance of moving all bodies per frame
+//        let num = Int.random(in: 1 ... 10)
+//
+//        if num == 1 {
+//            cyclePredators()
+//        }
     }
     
-    // function that handles what happens when the game starts
-    func startGame()
-    {
+    // runs when the game starts
+    func startGame() {
         currentGameState = gameState.inGame
         
         let fadeOutAction = SKAction.fadeIn(withDuration: 0.5)
         let deleteAction = SKAction.removeFromParent()
         let deleteSequence = SKAction.sequence([fadeOutAction, deleteAction])
         tapToStartLabel.run(deleteSequence)
-        
-        // moves the ship onto the screen from the bottom, like it was flying in
-        let moveShipOntoScreenAction = SKAction.moveTo(y: self.size.height*0.2, duration: 0.5)
-        let startLevelAction = SKAction.run(startNewLevel)
-        let startGameSequence = SKAction.sequence([moveShipOntoScreenAction, startLevelAction])
-        player.run(startGameSequence)
-        
+
+        spawnNewLife(name: "rock", physicsBody: BodyType.Rock)
+        spawnNewLife(name: "paper", physicsBody: BodyType.Paper)
+        spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors)
     }
     
-    // function that handles what happens when you lose a life
-    func loseALife()
-    {
-        // decrease number of lives by 1 and update the text in the label to reflect it
-        livesNumber -= 1
-        livesLabel.text = "Lives: \(livesNumber)"
-        
-        // make lives label grow and shrink when you lose a life
+    // runs when a predator comes into contact with its potential prey, or its demise
+    func checkWinner() {
+        var nowInTheLead: String = "¯|_(ツ)_/¯"
+        if (scissorsPopulation > paperPopulation) {
+            if (scissorsPopulation as Int > rockPopulation as Int) {
+                nowInTheLead = "scissors"
+            } else {
+                nowInTheLead = "rock"
+            }
+        } else if (paperPopulation > rockPopulation) {
+            nowInTheLead = "paper"
+        } else {
+            nowInTheLead = "rock"
+            
+        }
+        // update labels to reflect death
+        winner = nowInTheLead
+        winnerLabel.text = "In the lead: \(nowInTheLead)"
+
+        // make lable grow and shrink when something dies
         let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
         let scaleDown = SKAction.scale(to: 1, duration: 0.2)
         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
-        livesLabel.run(scaleSequence)
-        
-        // end game when out of lives
-        if livesNumber == 0
-        {
-            runGameOver()
+        winnerLabel.run(scaleSequence)
+
+        if 
+        (rockPopulation < 1 && paperPopulation < 1) ||
+        (rockPopulation < 1 && scissorsPopulation < 1) ||
+        (scissorsPopulation < 1 && paperPopulation < 1 ) {
+            runEndGame()
         }
     }
     
-    // function that increases score whenever a bullet comes into contact with an enemy
-    func addSCore()
-    {
-        // increase score by one and update label to reflect it
-        gameScore += 1
-        scoreLabel.text = "Score: \(gameScore)"
-        
-        // if score reaches 10, go to level 2, reaches 25 go to level 3, and so on ... implement more
-        if gameScore == 10 || gameScore == 25 || gameScore == 50
-        {
-            startNewLevel()
-        }
-        
-    }
-    
-    // function that handles what happens when the game ends
-    func runGameOver()
-    {
+    // function that handles what happens when one predator reigns supreme
+    func runEndGame() {
         // set game state to after game
         currentGameState = gameState.afterGame
         
         // removes everything from screen
         self.removeAllActions()
         
-        // stops bullets from spawning
-        self.enumerateChildNodes(withName: "Bullet")
-        {
-            bullet, stop in
-            bullet.removeAllActions()
+        // stops scissors from spawning
+        self.enumerateChildNodes(withName: "scissors"){
+            scissors, stop in
+            scissors.removeAllActions()
         }
         
-        // stops enemies from spawning
-        self.enumerateChildNodes(withName: "Enemy")
-        {
-            enemy, stop in
-            enemy.removeAllActions()
+        // stops rocks from spawning
+        self.enumerateChildNodes(withName: "rock"){
+            rock, stop in
+            rock.removeAllActions()
         }
         
-        // stops enemies from spawning
-        self.enumerateChildNodes(withName: "newLife")
-        {
-            newLife, stop in
-            newLife.removeAllActions()
-        }
-        
-        // stops enemies from spawning
-        self.enumerateChildNodes(withName: "powerUp")
-        {
-            powerUp, stop in
-            powerUp.removeAllActions()
+        // stops paper from spawning
+        self.enumerateChildNodes(withName: "paper"){
+            paper, stop in
+            paper.removeAllActions()
         }
         
         // changes scenes
@@ -308,12 +252,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         let waitToChangeScence = SKAction.wait(forDuration: 1)
         let changeSceneSequence = SKAction.sequence([waitToChangeScence, changeSceneAction])
         self.run(changeSceneSequence)
-        
     }
     
     // funtion that changes game scenes
-    func changeScene()
-    {
+    func changeScene(){
         let sceneToMoveTo = GameOverScene(size: self.size)
         sceneToMoveTo.scaleMode = self.scaleMode
         
@@ -321,450 +263,166 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         self.view!.presentScene(sceneToMoveTo, transition: myTransition)
     }
     
-    // function that determines when objects collide with one another
-    func didBegin(_ contact: SKPhysicsContact)
-    {
+    // function that runs when objects collide with one another
+    func didBegin(_ contact: SKPhysicsContact) {
         // create 2 physcis bodies
-        var body1 = SKPhysicsBody()
-        var body2 = SKPhysicsBody()
+        var player1 = SKPhysicsBody()
+        var player2 = SKPhysicsBody()
         
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask
-        {
-            body1 = contact.bodyA
-            body2 = contact.bodyB
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            player1 = contact.bodyA
+            player2 = contact.bodyB
+        } else {
+            player1 = contact.bodyB
+            player2 = contact.bodyA
         }
-        else
-        {
-            body1 = contact.bodyB
-            body2 = contact.bodyA
+
+        let player1Node = player1.node as? SKSpriteNode
+        let player2Node = player2.node as? SKSpriteNode
+        
+        switch (player1.categoryBitMask, player2.categoryBitMask) {
+            case (BodyType.Rock, BodyType.Rock):
+                break;
+            case (BodyType.Rock, BodyType.Paper):
+                player1Node?.texture = SKTexture(imageNamed: "paper");
+                player1.categoryBitMask = BodyType.Paper;
+                rockPopulation -= 1;
+                paperPopulation += 1;
+                break;
+            case (BodyType.Rock, BodyType.Scissors):
+                player2Node?.texture = SKTexture(imageNamed: "rock");
+                player2.categoryBitMask = BodyType.Rock;
+                scissorsPopulation -= 1;
+                rockPopulation += 1;
+                break;
+            case (BodyType.Paper, BodyType.Rock):
+                player2Node?.texture = SKTexture(imageNamed: "paper");
+                player2.categoryBitMask = BodyType.Paper;
+                rockPopulation -= 1;
+                paperPopulation += 1;
+                break;
+            case (BodyType.Paper, BodyType.Paper):
+                break;
+            case (BodyType.Paper, BodyType.Scissors):
+                player1Node?.texture = SKTexture(imageNamed: "scissors");
+                player1.categoryBitMask = BodyType.Scissors;
+                paperPopulation -= 1;
+                scissorsPopulation += 1;
+                break;
+            case (BodyType.Scissors, BodyType.Rock):
+                player1Node?.texture = SKTexture(imageNamed: "rock");
+                player1.categoryBitMask = BodyType.Rock;
+                scissorsPopulation -= 1;
+                rockPopulation += 1;
+                break;
+            case (BodyType.Scissors, BodyType.Paper):
+                player2Node?.texture = SKTexture(imageNamed: "scissors");
+                player2.categoryBitMask = BodyType.Scissors;
+                paperPopulation -= 1;
+                scissorsPopulation += 1;
+                break;
+            case (BodyType.Scissors, BodyType.Scissors):
+                break;
+        case (_, _):
+            break;
         }
-        
-        // handles when enemhy has hit the player
-        if body1.categoryBitMask == physicsCategories.Player && body2.categoryBitMask == physicsCategories.Enemy
-        {
-            // make explosion if player and enemy collide
-            if body1.node != nil
-            {
-                spawnExplosion(spawnPosition: body1.node!.position)
-            }
-            
-            // make explosion if player and enemy collide
-            if body2.node != nil
-            {
-                spawnExplosion(spawnPosition: body2.node!.position)
-            }
-            
-            // get rid of enemy and player
-            body1.node?.removeFromParent()
-            body2.node?.removeFromParent()
-            
-            // start game over scene
-            runGameOver()
-        }
-        
-        // handles when bullet has hit the enemy
-        if body1.categoryBitMask == physicsCategories.Bullet && body2.categoryBitMask == physicsCategories.Enemy
-        {
-            // increase score when a bullet hits an enemy
-            addSCore()
-            
-            if body2.node != nil
-            {
-                // if the enemy is off screen, dont collide
-                if body2.node!.position.y > self.size.height
-                {
-                    return
-                }
-                // when on screen, make an explosion when they collide
-                else
-                {
-                    spawnExplosion(spawnPosition: body2.node!.position)
-                }
-            }
-            
-            // get rid of the bullet, enemy, and explosion
-            body1.node?.removeFromParent()
-            body2.node?.removeFromParent()
-        }
-        
-        // handles when bullet has hit a new life
-        if body1.categoryBitMask == physicsCategories.Bullet && body2.categoryBitMask == physicsCategories.NewLife
-        {
-            // increase score when a bullet hits an enemy
-            gainALife()
-            
-            if body2.node != nil
-            {
-                // if the enemy is off screen, dont collide
-                if body2.node!.position.y > self.size.height
-                {
-                    return
-                }
-                    // when on screen, make an explosion when they collide
-                else
-                {
-                    // change from explosion to something happy for a life
-                    spawnExplosion(spawnPosition: body2.node!.position)
-                }
-            }
-            
-            // get rid of the bullet, enemy, and explosion
-            body1.node?.removeFromParent()
-            body2.node?.removeFromParent()
-        }
-        
-        // handles when a newlife object has hit a player
-        if body1.categoryBitMask == physicsCategories.Player && body2.categoryBitMask == physicsCategories.NewLife
-        {
-            // increase score when a bullet hits an enemy
-            gainALife()
-            
-            if body2.node != nil
-            {
-                // if the enemy is off screen, dont collide
-                if body2.node!.position.y > self.size.height
-                {
-                    return
-                }
-                    // when on screen, make an explosion when they collide
-                else
-                {
-                    body2.node?.removeFromParent()
-                }
-            }
-            
-            
-            
-        }
-        
-        // handles when bullet has hit a power up
-        if body1.categoryBitMask == physicsCategories.Bullet && body2.categoryBitMask == physicsCategories.PowerUp
-        {
-            // change
-            // increase score when a bullet hits an enemy
-            gainALife()
-            
-            if body2.node != nil
-            {
-                // if the enemy is off screen, dont collide
-                if body2.node!.position.y > self.size.height
-                {
-                    return
-                }
-                    // when on screen, make an explosion when they collide
-                else
-                {
-                    // change from explosion to something happy for a life
-                    spawnExplosion(spawnPosition: body2.node!.position)
-                }
-            }
-            
-            // get rid of the bullet and powerup
-            body1.node?.removeFromParent()
-            body2.node?.removeFromParent()
-        }
-        
-        // handles when player comes in contact with hit a power up
-        if body1.categoryBitMask == physicsCategories.Player && body2.categoryBitMask == physicsCategories.PowerUp
-        {
-            // change
-            // increase score when a bullet hits an enemy
-            gainALife()
-            
-            if body2.node != nil
-            {
-                // if the enemy is off screen, dont collide
-                if body2.node!.position.y > self.size.height
-                {
-                    return
-                }
-                    // when on screen, make an explosion when they collide
-                else
-                {
-                     body2.node?.removeFromParent()
-                }
-            }
-            
-            // get rid of the power up
-            body2.node?.removeFromParent()
-        }
-        
-        
+        // checkWinner(); 
     }
     
-    
-    // mimics explosion graphic of space ships
-    func spawnExplosion(spawnPosition: CGPoint)
-    {
-        // creates explosion
-        let explosion = SKSpriteNode(imageNamed: "explosion")
-        explosion.position = spawnPosition
-        explosion.zPosition = 3
-        explosion.setScale(1)
-        self.addChild(explosion)
-        
-        // make explosion fade in and out
-        let scaleIn = SKAction.scale(to: 1, duration: 0.1)
-        let fadeOut = SKAction.fadeIn(withDuration: 0.1)
-        let delete = SKAction.removeFromParent()
-        
-        // make and run explosion sequence
-        let explosiveSequence = SKAction.sequence([explosionSound ,scaleIn, fadeOut, delete])
-        explosion.run(explosiveSequence)
-    }
-    
-    
-    // function that fires and moves bullet
-    func fireBullet()
-    {
-        // create bullet and set all of its attributes
-        let bullet = SKSpriteNode(imageNamed: "bullet")
-        bullet.name = "Bullet"
-        bullet.setScale(1)
-        bullet.position = player.position
-        bullet.zPosition = 1
-        bullet.physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
-        bullet.physicsBody!.affectedByGravity = false
-        bullet.physicsBody!.categoryBitMask = physicsCategories.Bullet
-        bullet.physicsBody!.collisionBitMask = physicsCategories.None
-        bullet.physicsBody!.contactTestBitMask = physicsCategories.Enemy
-        self.addChild(bullet)
-    
-        let moveBullet = SKAction.moveTo(y: self.size.height + bullet.size.height , duration: 1)
-        let deleteBullet = SKAction.removeFromParent()
-        
-        // make and run bullet sequence
-        let bulletSequence = SKAction.sequence([bulletSound, moveBullet, deleteBullet])
-        bullet.run(bulletSequence)
-        
-    }
-    
-    // function that spawns an enemy
-    func spawnEnemy()
-    {
-        // create a random x and y to spawn enemy at
-        let randomXstart = random(min: gameArea.minX, max: gameArea.maxX)
-        let randomXend = random(min: gameArea.minX , max: gameArea.maxX)
-        
-        // start and end points of the spawn
-        let startPoint = CGPoint(x: randomXstart , y: self.size.height * 1.2)
-        let endPoint = CGPoint(x: randomXend,  y: -self.size.height * 0.2)
-        
-        //create enemy and all its attributes
-        let enemy = SKSpriteNode(imageNamed: "enemyShip")
-        enemy.name = "Enemy"
-        enemy.setScale(0.4)
-        enemy.position = startPoint
-        enemy.zPosition = 2
-        enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
-        enemy.physicsBody!.affectedByGravity = false
-        enemy.physicsBody!.categoryBitMask = physicsCategories.Enemy
-        enemy.physicsBody!.collisionBitMask = physicsCategories.None
-        enemy.physicsBody!.contactTestBitMask = physicsCategories.Player | physicsCategories.Bullet
-        self.addChild(enemy)
-        
-        let moveEnemy = SKAction.move(to: endPoint , duration: 3.0)
-        
-        // make and run enemy sequence
-        let deleteEnemy = SKAction.removeFromParent()
-        let loseALifeAction = SKAction.run(loseALife)
-        let enemySequence = SKAction.sequence([moveEnemy, deleteEnemy, loseALifeAction])
-        
-        
-        if currentGameState == gameState.inGame
-        {
-            enemy.run(enemySequence)
-        }
-        
-        
-        //takes care of rotations of enemy depending on their direction
-//        let dx = endPoint.x - startPoint.x
-//        let dy = endPoint.y - startPoint.y
-//        let amountToRotate = atan2(dy, dx)
-//        enemy.zRotation = amountToRotate
-    
-    }
-    
-    // function that spawns a new life
-    func spawnNewLife()
-    {
-        // create a random x and y to spawn new life at
-        let randomXstart = random(min: gameArea.minX, max: gameArea.maxX)
-        let randomXend = random(min: gameArea.minX , max: gameArea.maxX)
-        
-        // start and end points of the spawn
-        let startPoint = CGPoint(x: randomXstart , y: self.size.height * 1.2)
-        let endPoint = CGPoint(x: randomXend,  y: -self.size.height * 0.2)
-        
-        //create newLife object and all its attributes
-        let newLife = SKSpriteNode(imageNamed: "newlife")
-        newLife.name = "newLife"
-        newLife.setScale(0.12)
-        newLife.position = startPoint
-        newLife.zPosition = 2
-        newLife.physicsBody = SKPhysicsBody(rectangleOf: newLife.size)
-        newLife.physicsBody!.affectedByGravity = false
-        newLife.physicsBody!.categoryBitMask = physicsCategories.NewLife
-        newLife.physicsBody!.collisionBitMask = physicsCategories.None
-        newLife.physicsBody!.contactTestBitMask = physicsCategories.Player | physicsCategories.Bullet
-        self.addChild(newLife)
-        
-        let moveNewLife = SKAction.move(to: endPoint , duration: 3.5)
-        
-        // make and run newLife sequence
-        let deleteNewLife = SKAction.removeFromParent()
-        let gainALifeAction = SKAction.run(gainALife)
-        let newLifeSequence = SKAction.sequence([moveNewLife, deleteNewLife, gainALifeAction])
-        
-        if currentGameState == gameState.inGame
-        {
-            newLife.run(newLifeSequence)
-        }
-        
-    }
-    
-    // increases number of lives by 1
-    func gainALife()
-    {
-        livesNumber += 1
-        
-        livesLabel.text = "Lives: \(livesNumber)"
-        
-        // make lives label grow and shrink when you gain a life
-        let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
-        let scaleDown = SKAction.scale(to: 1, duration: 0.2)
-        let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
-        livesLabel.run(scaleSequence)
-    }
-    
-    func spawnPowerUp()
-    {
-        // create a random x and y to spawn new life at
-        let randomXstart = random(min: gameArea.minX, max: gameArea.maxX)
-        let randomXend = random(min: gameArea.minX , max: gameArea.maxX)
-        
-        // start and end points of the spawn
-        let startPoint = CGPoint(x: randomXstart , y: self.size.height * 1.2)
-        let endPoint = CGPoint(x: randomXend,  y: -self.size.height * 0.2)
-        
-        //create newLife object and all its attributes
-        let powerUp = SKSpriteNode(imageNamed: "Icon")
-        powerUp.name = "powerUp"
-        powerUp.setScale(0.12)
-        powerUp.position = startPoint
-        powerUp.zPosition = 2
-        powerUp.physicsBody = SKPhysicsBody(rectangleOf: powerUp.size)
-        powerUp.physicsBody!.affectedByGravity = false
-        powerUp.physicsBody!.categoryBitMask = physicsCategories.PowerUp
-        powerUp.physicsBody!.collisionBitMask = physicsCategories.None
-        powerUp.physicsBody!.contactTestBitMask = physicsCategories.Player | physicsCategories.Bullet
-        self.addChild(powerUp)
-        
-        let movePowerUp = SKAction.move(to: endPoint , duration: 3.5)
-        
-        // make and run enemy sequence
-        let deletePowerUp = SKAction.removeFromParent()
-        let PowerUpSequence = SKAction.sequence([movePowerUp, deletePowerUp])
-        
-        if currentGameState == gameState.inGame
-        {
-            powerUp.run(PowerUpSequence)
-        }
-    }
-    
-    // enables powerUp for 15 seconds
-    func enablePowerUp()
-    {
-        
-    }
-    
-    // function that starts a new level based on players score
-    func startNewLevel()
-    {
-        // increase level by one
-        level += 1
-        
-        if self.action(forKey: "spawningEnemies") != nil
-        {
-            self.removeAction(forKey: "spawningEnemies")
-        }
-        
-        // create duration for the levels
-        var levelDuration = TimeInterval()
-        
-        switch level
-        {
-            // level 1 will span enemies every 1.2 secs
-            case 1: levelDuration = 1.2
-            
-            // level 2 will span enemies every 1 secs
-            case 2: levelDuration = 1
-            
-            // level 3 will span enemies every 0.8 secs
-            case 3: levelDuration = 0.8
-            
-            // level 4 will span enemies every 0.5 secs
-            case 4: levelDuration = 0.5
-            
+    // function that spawns a new generation
+    func spawnNewLife(name: String, physicsBody: UInt32) {
+        let populationField: Array<Float> = Array(repeating: 0, count: population/3);
+        var EnemyType1: UInt32;
+        var EnemyType2: UInt32;
+
+        switch(physicsBody) {
+            case BodyType.Rock:
+                EnemyType1 = BodyType.Paper;
+                EnemyType2 = BodyType.Scissors;
+                break;
+            case BodyType.Paper:
+                EnemyType1 = BodyType.Rock;
+                EnemyType2 = BodyType.Scissors;
+                break;
+            case BodyType.Scissors:
+                EnemyType1 = BodyType.Rock;
+                EnemyType2 = BodyType.Paper;
+                break;
             default:
-                levelDuration = 0.5
-                print("Cannot find level info");
+                EnemyType1 = BodyType.Paper;
+                EnemyType2 = BodyType.Scissors;
         }
-        
-        // spawn enemies
-        let spawn = SKAction.run(spawnEnemy)
-        let waitToSpawn = SKAction.wait(forDuration: levelDuration) //spawn frequency
-        let spawnSequence = SKAction.sequence([waitToSpawn, spawn])
-        let spawnForever = SKAction.repeatForever(spawnSequence)
-        self.run(spawnForever, withKey: "spawningEnemies")
+
+        for _ in populationField {
+            // create a random x and y to spawn the new life at
+            let randomXstart = random(min: gameArea.minX, max: gameArea.maxX)
+            let randomYstart = random(min: gameArea.minY, max: gameArea.maxY)
+//            let randomXend = random(min: gameArea.minX , max: gameArea.maxX)
+            
+            // start and end points of the spawn
+            let startPoint = CGPoint(x: randomXstart , y: randomYstart)
+//            let endPoint = CGPoint(x: randomXend,  y: -self.size.height * 0.2)
+            
+            //create player object and all its attributes
+            let newLife = SKSpriteNode(imageNamed: name)
+            newLife.name = name
+            newLife.setScale(0.8)
+            newLife.position = startPoint
+            newLife.zPosition = 2
+            newLife.physicsBody = SKPhysicsBody(rectangleOf: newLife.size)
+            newLife.physicsBody!.affectedByGravity = false
+            newLife.physicsBody!.friction = 0
+            // newLife.physicsBody!.restitution = 1
+            // newLife.physicsBody!.linearDamping = 0
+            // newLife.physicsBody!.angularDamping = 0
+            newLife.physicsBody!.categoryBitMask = physicsBody
+            newLife.physicsBody!.collisionBitMask = physicsBody
+            newLife.physicsBody!.contactTestBitMask = EnemyType1 | EnemyType2
+            self.addChild(newLife)
+            
+            //get the player moving
+            newLife.physicsBody!.applyImpulse(CGVector(dx: 5.0, dy: -5.0))
+            newLife.physicsBody!.applyForce(CGVector(dx: 5.0, dy: -5.0))
+        }
         
     }
     
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
-        if currentGameState == gameState.preGame
-        {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if currentGameState == gameState.preGame {
             startGame()
-        }
-        
-        else if currentGameState == gameState.inGame
-        {
-            fireBullet()
-        }
-        
+        } 
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
-        // moves the ship left and right by dragging on the screen
-        for touch: AnyObject in touches
-        {
-            let pointOfTouch = touch.location(in: self)
-            let previousTouch = touch.previousLocation(in: self)
+    // override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //     // moves the ship left and right by dragging on the screen
+    //     for touch: AnyObject in touches
+    //     {
+    //         let pointOfTouch = touch.location(in: self)
+    //         let previousTouch = touch.previousLocation(in: self)
             
-            let amountDragged = pointOfTouch.x - previousTouch.x
+    //         let amountDragged = pointOfTouch.x - previousTouch.x
             
-            if currentGameState == gameState.inGame
-            {
-                 player.position.x += amountDragged
-            }
+    //         if currentGameState == gameState.inGame
+    //         {
+    //              rock.position.x += amountDragged
+    //         }
 
             
-            //when player moves to far to right, bump back into game area
-            if player.position.x > gameArea.maxX - player.size.width/2
-            {
-                player.position.x = gameArea.maxX - player.size.width/2
-            }
+    //         //when rock moves to far to right, bump back into game area
+    //         if rock.position.x > gameArea.maxX - rock.size.width/2
+    //         {
+    //             rock.position.x = gameArea.maxX - rock.size.width/2
+    //         }
 
-            //when player moves to far to left, bump back into game area
-            if player.position.x < gameArea.minX + player.size.width/2
-            {
-                player.position.x = gameArea.minX + player.size.width/2
-            }
+    //         //when rock moves to far to left, bump back into game area
+    //         if rock.position.x < gameArea.minX + rock.size.width/2
+    //         {
+    //             rock.position.x = gameArea.minX + rock.size.width/2
+    //         }
             
-        }
+    //     }
     
-    }
+    // }
 
 }
