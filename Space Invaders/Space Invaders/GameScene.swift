@@ -77,6 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // prevent anything from leaving the pen
         let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         borderBody.friction = 0
+        borderBody.restitution = 0.5
         self.physicsBody = borderBody
         physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0);
 
@@ -108,20 +109,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func cyclePredators() {
         enumerateChildNodes(withName: "*//*") { (predator, stop) in
-            // rotate and move to new location
-            let randomNewX = Int(predator.position.x) + Int.random(in: 0...30)
-            let randomNewY = Int(predator.position.y) + Int.random(in: 0...30)
-            let yDifference = randomNewY - Int(predator.position.y)
-            let xDifference = randomNewX - Int(predator.position.x)
-            let angleBetween = atan2(yDifference, xDifference)
-            let xVelocity = cos(angleBetween) * predatorSpeed
-            let yVelocity = sin(angleBetween) * predatorSpeed
-            predator.zRotation = angleBetween
-            predator.position.x = CGFloat(randomNewX)
-            predator.position.y = CGFloat(randomNewY)
-            predator.xVelocity = xVelocity
-            predator.yVelocity = yVelocity
+            // move to new location and shove
+            let xPositive = Bool.random();
+            let yPositive = Bool.random();
+            let xFloor = xPositive ? 50 : -100
+            let xCeil = xPositive ? 100 : -50
+            let yFloor = yPositive ? 50 : -100
+            let yCeil = yPositive ? 100 : -50
+            let randomLocationX = Int(predator.position.x) + Int.random(in: xFloor...xCeil)
+            let randomLocationY = Int(predator.position.y) + Int.random(in: yFloor...yCeil)
+            let randomPhysicsX = Int.random(in: (xPositive ? 5 : -5)...(xPositive ? 15 : -15))
+            let randomPhysicsY = Int.random(in: (yPositive ? 5 : -5)...(yPositive ? 15 : -15))
+            predator.position.x = CGFloat(randomLocationX)
+            predator.position.y = CGFloat(randomLocationY)
+            predator.physicsBody!.applyImpulse(CGVector(dx: randomPhysicsX, dy: randomPhysicsY))
+            predator.physicsBody!.applyForce(CGVector(dx: randomPhysicsX, dy: randomPhysicsY))
             
+
             // let minX = Float(predator.frame.minX)
             // let minY = Float(predator.frame.minY)
             // let maxX = Float(predator.frame.maxX)
@@ -213,10 +217,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
         winnerLabel.run(scaleSequence)
 
-        if 
-        (rockPopulation < 1 && paperPopulation < 1) ||
-        (rockPopulation < 1 && scissorsPopulation < 1) ||
-        (scissorsPopulation < 1 && paperPopulation < 1 ) {
+        print("R:", rockPopulation, "P:", paperPopulation, "S:", scissorsPopulation)
+
+        let remainingRocks = self.childNodes(withName: "rock")
+        let remainingPaper = self.childNodes(withName: "paper")
+        let remainingScissors = self.childNodes(withName: "scissors")
+
+        if ((remainingRocks.count < 1 && remainingPaper.count < 1) || 
+        (remainingRocks.count < 1 && remainingScissors.count < 1) ||
+        (remainingPaper.count < 1 && remainingScissors.count < 1)) {
             runEndGame()
         }
     }
@@ -288,18 +297,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 player1.categoryBitMask = BodyType.Paper;
                 rockPopulation -= 1;
                 paperPopulation += 1;
+                checkWinner(); 
                 break;
             case (BodyType.Rock, BodyType.Scissors):
                 player2Node?.texture = SKTexture(imageNamed: "rock");
                 player2.categoryBitMask = BodyType.Rock;
                 scissorsPopulation -= 1;
                 rockPopulation += 1;
+                checkWinner(); 
                 break;
             case (BodyType.Paper, BodyType.Rock):
                 player2Node?.texture = SKTexture(imageNamed: "paper");
                 player2.categoryBitMask = BodyType.Paper;
                 rockPopulation -= 1;
                 paperPopulation += 1;
+                checkWinner(); 
                 break;
             case (BodyType.Paper, BodyType.Paper):
                 break;
@@ -308,25 +320,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 player1.categoryBitMask = BodyType.Scissors;
                 paperPopulation -= 1;
                 scissorsPopulation += 1;
+                checkWinner(); 
                 break;
             case (BodyType.Scissors, BodyType.Rock):
                 player1Node?.texture = SKTexture(imageNamed: "rock");
                 player1.categoryBitMask = BodyType.Rock;
                 scissorsPopulation -= 1;
                 rockPopulation += 1;
+                checkWinner(); 
                 break;
             case (BodyType.Scissors, BodyType.Paper):
                 player2Node?.texture = SKTexture(imageNamed: "scissors");
                 player2.categoryBitMask = BodyType.Scissors;
                 paperPopulation -= 1;
                 scissorsPopulation += 1;
+                checkWinner(); 
                 break;
             case (BodyType.Scissors, BodyType.Scissors):
                 break;
         case (_, _):
             break;
         }
-        // checkWinner(); 
     }
     
     // function that spawns a new generation
@@ -372,7 +386,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             newLife.physicsBody = SKPhysicsBody(rectangleOf: newLife.size)
             newLife.physicsBody!.affectedByGravity = false
             newLife.physicsBody!.friction = 0
-            // newLife.physicsBody!.restitution = 1
+            newLife.physicsBody!.restitution = 0.5
             // newLife.physicsBody!.linearDamping = 0
             // newLife.physicsBody!.angularDamping = 0
             newLife.physicsBody!.categoryBitMask = physicsBody
