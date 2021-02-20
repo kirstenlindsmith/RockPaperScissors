@@ -119,8 +119,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             predator.zRotation = angleBetween
             predator.position.x = CGFloat(randomNewX)
             predator.position.y = CGFloat(randomNewY)
-            // predator.xVelocity = xVelocity
-            // predator.yVelocity = yVelocity
+            predator.xVelocity = xVelocity
+            predator.yVelocity = yVelocity
             
             // let minX = Float(predator.frame.minX)
             // let minY = Float(predator.frame.minY)
