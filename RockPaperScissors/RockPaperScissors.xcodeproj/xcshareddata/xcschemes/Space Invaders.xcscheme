@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B8C9C98A222A47FA009B9E10"
-               BuildableName = "Space Invaders.app"
-               BlueprintName = "Space Invaders"
-               ReferencedContainer = "container:Space Invaders.xcodeproj">
+               BuildableName = "RockPaperScissors.app"
+               BlueprintName = "RockPaperScissors"
+               ReferencedContainer = "container:RockPaperScissors.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B8C9C9A4222A47FD009B9E10"
-               BuildableName = "Space InvadersTests.xctest"
-               BlueprintName = "Space InvadersTests"
-               ReferencedContainer = "container:Space Invaders.xcodeproj">
+               BuildableName = "RockPaperScissorsTests.xctest"
+               BlueprintName = "RockPaperScissorsTests"
+               ReferencedContainer = "container:RockPaperScissors.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B8C9C9AF222A47FD009B9E10"
-               BuildableName = "Space InvadersUITests.xctest"
-               BlueprintName = "Space InvadersUITests"
-               ReferencedContainer = "container:Space Invaders.xcodeproj">
+               BuildableName = "RockPaperScissorsUITests.xctest"
+               BlueprintName = "RockPaperScissorsUITests"
+               ReferencedContainer = "container:RockPaperScissors.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B8C9C98A222A47FA009B9E10"
-            BuildableName = "Space Invaders.app"
-            BlueprintName = "Space Invaders"
-            ReferencedContainer = "container:Space Invaders.xcodeproj">
+            BuildableName = "RockPaperScissors.app"
+            BlueprintName = "RockPaperScissors"
+            ReferencedContainer = "container:RockPaperScissors.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B8C9C98A222A47FA009B9E10"
-            BuildableName = "Space Invaders.app"
-            BlueprintName = "Space Invaders"
-            ReferencedContainer = "container:Space Invaders.xcodeproj">
+            BuildableName = "RockPaperScissors.app"
+            BlueprintName = "RockPaperScissors"
+            ReferencedContainer = "container:RockPaperScissors.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B8C9C98A222A47FA009B9E10"
-            BuildableName = "Space Invaders.app"
-            BlueprintName = "Space Invaders"
-            ReferencedContainer = "container:Space Invaders.xcodeproj">
+            BuildableName = "RockPaperScissors.app"
+            BlueprintName = "RockPaperScissors"
+            ReferencedContainer = "container:RockPaperScissors.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

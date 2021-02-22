@@ -1,6 +1,6 @@
 //
 //  Space_InvadersUITests.swift
-//  Space InvadersUITests
+//  RockPaperScissorsUITests
 //
 //  Created by Francisco Franco on 3/2/19.
 //  Copyright © 2019 Francisco Franco. All rights reserved.
