@@ -18,8 +18,8 @@
 		B8C9C99A222A47FA009B9E10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C998222A47FA009B9E10 /* Main.storyboard */; };
 		B8C9C99C222A47FD009B9E10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C99B222A47FD009B9E10 /* Assets.xcassets */; };
 		B8C9C99F222A47FD009B9E10 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C99D222A47FD009B9E10 /* LaunchScreen.storyboard */; };
-		B8C9C9AA222A47FD009B9E10 /* Space_InvadersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9C9A9222A47FD009B9E10 /* Space_InvadersTests.swift */; };
-		B8C9C9B5222A47FD009B9E10 /* Space_InvadersUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9C9B4222A47FD009B9E10 /* Space_InvadersUITests.swift */; };
+		B8C9C9AA222A47FD009B9E10 /* RockPaperScissorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */; };
+		B8C9C9B5222A47FD009B9E10 /* RockPaperScissorsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */; };
 		B8C9C9C3222A59DB009B9E10 /* laser.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C9C2222A59DB009B9E10 /* laser.wav */; };
 		B8CDBC0D2236E2B60040DF41 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CDBC0C2236E2B60040DF41 /* MainMenuScene.swift */; };
 		B8CDBC11223773290040DF41 /* Superboy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC10223773290040DF41 /* Superboy.mp3 */; };
@@ -32,23 +32,23 @@
 			containerPortal = B8C9C983222A47FA009B9E10 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B8C9C98A222A47FA009B9E10;
-			remoteInfo = "RockPaperScissors";
+			remoteInfo = RockPaperScissors;
 		};
 		B8C9C9B1222A47FD009B9E10 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B8C9C983222A47FA009B9E10 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B8C9C98A222A47FA009B9E10;
-			remoteInfo = "RockPaperScissors";
+			remoteInfo = RockPaperScissors;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B86C27C02238B00400A656D5 /* RockPaperScissors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RockPaperScissors.entitlements"; sourceTree = "<group>"; };
+		B86C27C02238B00400A656D5 /* RockPaperScissors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RockPaperScissors.entitlements; sourceTree = "<group>"; };
 		B8794AE5222FAD140011A517 /* theboldfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = theboldfont.ttf; sourceTree = "<group>"; };
 		B891D6482231E6B900E2AE39 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		B89E3584222B799C0032BA3D /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
-		B8C9C98B222A47FA009B9E10 /* RockPaperScissors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RockPaperScissors.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8C9C98B222A47FA009B9E10 /* RockPaperScissors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RockPaperScissors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C9C98E222A47FA009B9E10 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8C9C990222A47FA009B9E10 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		B8C9C992222A47FA009B9E10 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -58,11 +58,11 @@
 		B8C9C99B222A47FD009B9E10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8C9C99E222A47FD009B9E10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8C9C9A0222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C9C9A5222A47FD009B9E10 /* RockPaperScissorsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RockPaperScissorsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B8C9C9A9222A47FD009B9E10 /* Space_InvadersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space_InvadersTests.swift; sourceTree = "<group>"; };
+		B8C9C9A5222A47FD009B9E10 /* RockPaperScissorsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RockPaperScissorsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockPaperScissorsTests.swift; sourceTree = "<group>"; };
 		B8C9C9AB222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C9C9B0222A47FD009B9E10 /* RockPaperScissorsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RockPaperScissorsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B8C9C9B4222A47FD009B9E10 /* Space_InvadersUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space_InvadersUITests.swift; sourceTree = "<group>"; };
+		B8C9C9B0222A47FD009B9E10 /* RockPaperScissorsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RockPaperScissorsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockPaperScissorsUITests.swift; sourceTree = "<group>"; };
 		B8C9C9B6222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8C9C9C2222A59DB009B9E10 /* laser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = laser.wav; sourceTree = "<group>"; };
 		B8CDBC0C2236E2B60040DF41 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
@@ -136,25 +136,25 @@
 				B8C9C9A0222A47FD009B9E10 /* Info.plist */,
 				B8CDBC12223774E40040DF41 /* appIcon.png */,
 			);
-			path = "RockPaperScissors";
+			path = RockPaperScissors;
 			sourceTree = "<group>";
 		};
 		B8C9C9A8222A47FD009B9E10 /* RockPaperScissorsTests */ = {
 			isa = PBXGroup;
 			children = (
-				B8C9C9A9222A47FD009B9E10 /* Space_InvadersTests.swift */,
+				B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */,
 				B8C9C9AB222A47FD009B9E10 /* Info.plist */,
 			);
-			path = "RockPaperScissorsTests";
+			path = RockPaperScissorsTests;
 			sourceTree = "<group>";
 		};
 		B8C9C9B3222A47FD009B9E10 /* RockPaperScissorsUITests */ = {
 			isa = PBXGroup;
 			children = (
-				B8C9C9B4222A47FD009B9E10 /* Space_InvadersUITests.swift */,
+				B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */,
 				B8C9C9B6222A47FD009B9E10 /* Info.plist */,
 			);
-			path = "RockPaperScissorsUITests";
+			path = RockPaperScissorsUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,8 +172,8 @@
 			);
 			dependencies = (
 			);
-			name = "RockPaperScissors";
-			productName = "RockPaperScissors";
+			name = RockPaperScissors;
+			productName = RockPaperScissors;
 			productReference = B8C9C98B222A47FA009B9E10 /* RockPaperScissors.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -190,8 +190,8 @@
 			dependencies = (
 				B8C9C9A7222A47FD009B9E10 /* PBXTargetDependency */,
 			);
-			name = "RockPaperScissorsTests";
-			productName = "RockPaperScissorsTests";
+			name = RockPaperScissorsTests;
+			productName = RockPaperScissorsTests;
 			productReference = B8C9C9A5222A47FD009B9E10 /* RockPaperScissorsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -208,8 +208,8 @@
 			dependencies = (
 				B8C9C9B2222A47FD009B9E10 /* PBXTargetDependency */,
 			);
-			name = "RockPaperScissorsUITests";
-			productName = "RockPaperScissorsUITests";
+			name = RockPaperScissorsUITests;
+			productName = RockPaperScissorsUITests;
 			productReference = B8C9C9B0222A47FD009B9E10 /* RockPaperScissorsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -220,7 +220,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = "Francisco Franco";
 				TargetAttributes = {
 					B8C9C98A222A47FA009B9E10 = {
@@ -318,7 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8C9C9AA222A47FD009B9E10 /* Space_InvadersTests.swift in Sources */,
+				B8C9C9AA222A47FD009B9E10 /* RockPaperScissorsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8C9C9B5222A47FD009B9E10 /* Space_InvadersUITests.swift in Sources */,
+				B8C9C9B5222A47FD009B9E10 /* RockPaperScissorsUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +391,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -452,6 +453,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -488,13 +490,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = "RockPaperScissors/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = RockPaperScissors/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.franciscofranco.RockPaperScissors";
+				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissors;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -509,13 +511,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = "RockPaperScissors/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = RockPaperScissors/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.franciscofranco.RockPaperScissors";
+				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissors;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -530,13 +532,13 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = "RockPaperScissorsTests/Info.plist";
+				INFOPLIST_FILE = RockPaperScissorsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.franciscofranco.RockPaperScissorsTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -551,13 +553,13 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = "RockPaperScissorsTests/Info.plist";
+				INFOPLIST_FILE = RockPaperScissorsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.franciscofranco.RockPaperScissorsTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -571,17 +573,17 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = "RockPaperScissorsUITests/Info.plist";
+				INFOPLIST_FILE = RockPaperScissorsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.franciscofranco.RockPaperScissorsUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "RockPaperScissors";
+				TEST_TARGET_NAME = RockPaperScissors;
 			};
 			name = Debug;
 		};
@@ -591,17 +593,17 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = "RockPaperScissorsUITests/Info.plist";
+				INFOPLIST_FILE = RockPaperScissorsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.franciscofranco.RockPaperScissorsUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "RockPaperScissors";
+				TEST_TARGET_NAME = RockPaperScissors;
 			};
 			name = Release;
 		};

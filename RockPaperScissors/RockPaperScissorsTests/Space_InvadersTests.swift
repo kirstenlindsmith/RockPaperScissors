@@ -1,5 +1,5 @@
 //
-//  Space_InvadersTests.swift
+//  RockPaperScissorsTests.swift
 //  RockPaperScissorsTests
 //
 //  Created by Francisco Franco on 3/2/19.
@@ -7,9 +7,9 @@
 //
 
 import XCTest
-@testable import Space_Invaders
+@testable import RockPaperScissors
 
-class Space_InvadersTests: XCTestCase {
+class RockPaperScissorsTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
