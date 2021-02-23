@@ -219,15 +219,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         print("R:", rockPopulation, "P:", paperPopulation, "S:", scissorsPopulation)
 
-        let remainingRocks = self.childNodes(withName: "rock")
-        let remainingPaper = self.childNodes(withName: "paper")
-        let remainingScissors = self.childNodes(withName: "scissors")
-
-        if ((remainingRocks.count < 1 && remainingPaper.count < 1) || 
-        (remainingRocks.count < 1 && remainingScissors.count < 1) ||
-        (remainingPaper.count < 1 && remainingScissors.count < 1)) {
-            runEndGame()
-        }
+//        let remainingRocks = self.childNodes(withName: "rock") //Value of type 'GameScene' has no member 'childNodes'
+//        let remainingPaper = self.childNodes(withName: "paper")
+//        let remainingScissors = self.childNodes(withName: "scissors")
+//
+//        if ((remainingRocks.count < 1 && remainingPaper.count < 1) ||
+//        (remainingRocks.count < 1 && remainingScissors.count < 1) ||
+//        (remainingPaper.count < 1 && remainingScissors.count < 1)) {
+//            runEndGame()
+//        }
     }
     
     // function that handles what happens when one predator reigns supreme

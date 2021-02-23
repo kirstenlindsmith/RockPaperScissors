@@ -18,30 +18,11 @@
 		B8C9C99A222A47FA009B9E10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C998222A47FA009B9E10 /* Main.storyboard */; };
 		B8C9C99C222A47FD009B9E10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C99B222A47FD009B9E10 /* Assets.xcassets */; };
 		B8C9C99F222A47FD009B9E10 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C99D222A47FD009B9E10 /* LaunchScreen.storyboard */; };
-		B8C9C9AA222A47FD009B9E10 /* RockPaperScissorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */; };
-		B8C9C9B5222A47FD009B9E10 /* RockPaperScissorsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */; };
 		B8C9C9C3222A59DB009B9E10 /* laser.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8C9C9C2222A59DB009B9E10 /* laser.wav */; };
 		B8CDBC0D2236E2B60040DF41 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CDBC0C2236E2B60040DF41 /* MainMenuScene.swift */; };
 		B8CDBC11223773290040DF41 /* Superboy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC10223773290040DF41 /* Superboy.mp3 */; };
 		B8CDBC13223774E40040DF41 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC12223774E40040DF41 /* appIcon.png */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B8C9C9A6222A47FD009B9E10 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B8C9C983222A47FA009B9E10 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B8C9C98A222A47FA009B9E10;
-			remoteInfo = RockPaperScissors;
-		};
-		B8C9C9B1222A47FD009B9E10 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B8C9C983222A47FA009B9E10 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B8C9C98A222A47FA009B9E10;
-			remoteInfo = RockPaperScissors;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B86C27C02238B00400A656D5 /* RockPaperScissors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RockPaperScissors.entitlements; sourceTree = "<group>"; };
@@ -58,10 +39,8 @@
 		B8C9C99B222A47FD009B9E10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8C9C99E222A47FD009B9E10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8C9C9A0222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C9C9A5222A47FD009B9E10 /* RockPaperScissorsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RockPaperScissorsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockPaperScissorsTests.swift; sourceTree = "<group>"; };
 		B8C9C9AB222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C9C9B0222A47FD009B9E10 /* RockPaperScissorsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RockPaperScissorsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockPaperScissorsUITests.swift; sourceTree = "<group>"; };
 		B8C9C9B6222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8C9C9C2222A59DB009B9E10 /* laser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = laser.wav; sourceTree = "<group>"; };
@@ -72,20 +51,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		B8C9C988222A47FA009B9E10 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B8C9C9A2222A47FD009B9E10 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B8C9C9AD222A47FD009B9E10 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -109,8 +74,6 @@
 			isa = PBXGroup;
 			children = (
 				B8C9C98B222A47FA009B9E10 /* RockPaperScissors.app */,
-				B8C9C9A5222A47FD009B9E10 /* RockPaperScissorsTests.xctest */,
-				B8C9C9B0222A47FD009B9E10 /* RockPaperScissorsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -177,42 +140,6 @@
 			productReference = B8C9C98B222A47FA009B9E10 /* RockPaperScissors.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B8C9C9A4222A47FD009B9E10 /* RockPaperScissorsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B8C9C9BC222A47FD009B9E10 /* Build configuration list for PBXNativeTarget "RockPaperScissorsTests" */;
-			buildPhases = (
-				B8C9C9A1222A47FD009B9E10 /* Sources */,
-				B8C9C9A2222A47FD009B9E10 /* Frameworks */,
-				B8C9C9A3222A47FD009B9E10 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B8C9C9A7222A47FD009B9E10 /* PBXTargetDependency */,
-			);
-			name = RockPaperScissorsTests;
-			productName = RockPaperScissorsTests;
-			productReference = B8C9C9A5222A47FD009B9E10 /* RockPaperScissorsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		B8C9C9AF222A47FD009B9E10 /* RockPaperScissorsUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B8C9C9BF222A47FD009B9E10 /* Build configuration list for PBXNativeTarget "RockPaperScissorsUITests" */;
-			buildPhases = (
-				B8C9C9AC222A47FD009B9E10 /* Sources */,
-				B8C9C9AD222A47FD009B9E10 /* Frameworks */,
-				B8C9C9AE222A47FD009B9E10 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B8C9C9B2222A47FD009B9E10 /* PBXTargetDependency */,
-			);
-			name = RockPaperScissorsUITests;
-			productName = RockPaperScissorsUITests;
-			productReference = B8C9C9B0222A47FD009B9E10 /* RockPaperScissorsUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -237,14 +164,6 @@
 							};
 						};
 					};
-					B8C9C9A4222A47FD009B9E10 = {
-						CreatedOnToolsVersion = 10.1;
-						TestTargetID = B8C9C98A222A47FA009B9E10;
-					};
-					B8C9C9AF222A47FD009B9E10 = {
-						CreatedOnToolsVersion = 10.1;
-						TestTargetID = B8C9C98A222A47FA009B9E10;
-					};
 				};
 			};
 			buildConfigurationList = B8C9C986222A47FA009B9E10 /* Build configuration list for PBXProject "RockPaperScissors" */;
@@ -261,8 +180,6 @@
 			projectRoot = "";
 			targets = (
 				B8C9C98A222A47FA009B9E10 /* RockPaperScissors */,
-				B8C9C9A4222A47FD009B9E10 /* RockPaperScissorsTests */,
-				B8C9C9AF222A47FD009B9E10 /* RockPaperScissorsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -285,20 +202,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B8C9C9A3222A47FD009B9E10 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B8C9C9AE222A47FD009B9E10 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -314,36 +217,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B8C9C9A1222A47FD009B9E10 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B8C9C9AA222A47FD009B9E10 /* RockPaperScissorsTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B8C9C9AC222A47FD009B9E10 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B8C9C9B5222A47FD009B9E10 /* RockPaperScissorsUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B8C9C9A7222A47FD009B9E10 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B8C9C98A222A47FA009B9E10 /* RockPaperScissors */;
-			targetProxy = B8C9C9A6222A47FD009B9E10 /* PBXContainerItemProxy */;
-		};
-		B8C9C9B2222A47FD009B9E10 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B8C9C98A222A47FA009B9E10 /* RockPaperScissors */;
-			targetProxy = B8C9C9B1222A47FD009B9E10 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B8C9C998222A47FA009B9E10 /* Main.storyboard */ = {
@@ -525,88 +399,6 @@
 			};
 			name = Release;
 		};
-		B8C9C9BD222A47FD009B9E10 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = RockPaperScissorsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RockPaperScissors.app/RockPaperScissors";
-			};
-			name = Debug;
-		};
-		B8C9C9BE222A47FD009B9E10 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = RockPaperScissorsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RockPaperScissors.app/RockPaperScissors";
-			};
-			name = Release;
-		};
-		B8C9C9C0222A47FD009B9E10 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = RockPaperScissorsUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RockPaperScissors;
-			};
-			name = Debug;
-		};
-		B8C9C9C1222A47FD009B9E10 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HXF8H226EA;
-				INFOPLIST_FILE = RockPaperScissorsUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.franciscofranco.RockPaperScissorsUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RockPaperScissors;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -624,24 +416,6 @@
 			buildConfigurations = (
 				B8C9C9BA222A47FD009B9E10 /* Debug */,
 				B8C9C9BB222A47FD009B9E10 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B8C9C9BC222A47FD009B9E10 /* Build configuration list for PBXNativeTarget "RockPaperScissorsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B8C9C9BD222A47FD009B9E10 /* Debug */,
-				B8C9C9BE222A47FD009B9E10 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B8C9C9BF222A47FD009B9E10 /* Build configuration list for PBXNativeTarget "RockPaperScissorsUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B8C9C9C0222A47FD009B9E10 /* Debug */,
-				B8C9C9C1222A47FD009B9E10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
