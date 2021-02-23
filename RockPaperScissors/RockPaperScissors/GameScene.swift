@@ -103,66 +103,73 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(tapToStartLabel)
         
         // makes everything fade onto the scene
-        let fadeInAction = SKAction.fadeIn(withDuration: 0.3)
+        let fadeInAction = SKAction.fadeIn(witfuckkhDuration: 0.3)
         tapToStartLabel.run(fadeInAction)
     }
 
     func cyclePredators() {
-        enumerateChildNodes(withName: "*//*") { (predator, stop) in
-            // move to new location and shove
-            let xPositive = Bool.random();
-            let yPositive = Bool.random();
-            let xFloor = xPositive ? 50 : -100
-            let xCeil = xPositive ? 100 : -50
-            let yFloor = yPositive ? 50 : -100
-            let yCeil = yPositive ? 100 : -50
-            let randomLocationX = Int(predator.position.x) + Int.random(in: xFloor...xCeil)
-            let randomLocationY = Int(predator.position.y) + Int.random(in: yFloor...yCeil)
-            let randomPhysicsX = Int.random(in: (xPositive ? 5 : -5)...(xPositive ? 15 : -15))
-            let randomPhysicsY = Int.random(in: (yPositive ? 5 : -5)...(yPositive ? 15 : -15))
-            predator.position.x = CGFloat(randomLocationX)
-            predator.position.y = CGFloat(randomLocationY)
-            predator.physicsBody!.applyImpulse(CGVector(dx: randomPhysicsX, dy: randomPhysicsY))
-            predator.physicsBody!.applyForce(CGVector(dx: randomPhysicsX, dy: randomPhysicsY))
-            
+        /*
+        notes from jim:
 
-            // let minX = Float(predator.frame.minX)
-            // let minY = Float(predator.frame.minY)
-            // let maxX = Float(predator.frame.maxX)
-            // let maxY = Float(predator.frame.maxY)
+        let neighbors: [SKNode] = neighborsInProximity.map { $0 as? SKNode }.compactMap({ $0 })
 
-            // let neighborsTree = GKRTree(maxNumberOfChildren: 3)
-            // neighborsTree.addElement(
-            //     predator,
-            //     boundingRectMin: vector2(minX, minY),
-            //     boundingRectMax: vector2(maxX, maxY),
-            //     splitStrategy: GKRTreeSplitStrategy.linear
-            // )
-            // let neighborsInProximity = neighborsTree.elements(
-            //      inBoundingRectMin: vector2(minX, minY),
-            //     rectMax: vector2(maxX, maxY)
-            //     // inBoundingRectMin: vector2(Float(predator.position.x - 100), Float(predator.position.y - 50)),
-            //     // rectMax: vector2(Float(predator.position.x + 50), Float(predator.position.y + 50))
-            // )
+        for neighbor in neighbors {
 
-            // for neighbor in neighborsInProximity {
-            //     if (
-            //         predator.name == "rock" && (neighbor as! SKNode).name == "scissors" ||
-            //         predator.name == "paper" && (neighbor as! SKNode).name == "rock" ||
-            //         predator.name == "scissors" && (neighbor as! SKNode).name == "paper"
-            //     ) {
-            //         //rotate towards the prey
-                    // let yDifference = (neighbor as! SKNode).position.y - predator.position.y
-                    // let xDifference = (neighbor as! SKNode).position.x - predator.position.x
-                    // let angleBetween = atan2(yDifference, xDifference)
-                    // predator.zRotation = angleBetween
-            //         //move towards the prey
-                    // let xVelocity = cos(angleBetween) * predatorSpeed
-                    // let yVelocity = sin(angleBetween) * predatorSpeed
-            //         predator.position.x += xVelocity
-            //         predator.position.y += yVelocity
-            //     }
-            // }
+            guard let nodeName = neighbor.name else {
+                continue
+            }
+
+            let firstCondition = predator.name == "rock" && nodeName == "scissors"
+            let secondCondition = predator.name == "paper" && nodeName == "rock"
+            let thirdCondition = predator.name == "scissors" && nodeName == "paper"
+
+            guard firstCondition || secondCondition || thirdCondition else {
+                continue
+            }
+
+            // all the code you want to have execute
+
+        }
+        */
+        enumerateChildNodes(withName: "*") { (predator, stop) in
+            let minX = Float(predator.frame.minX)
+            let minY = Float(predator.frame.minY)
+            let maxX = Float(predator.frame.maxX)
+            let maxY = Float(predator.frame.maxY)
+
+            let neighborsTree = GKRTree(maxNumberOfChildren: 10)
+            neighborsTree.addElement(
+                predator,
+                boundingRectMin: vector2(minX, minY),
+                boundingRectMax: vector2(maxX, maxY),
+                splitStrategy: GKRTreeSplitStrategy.linear
+            )
+            let neighborsInProximity = neighborsTree.elements(
+                 inBoundingRectMin: vector2(minX, minY),
+                rectMax: vector2(maxX, maxY)
+                // inBoundingRectMin: vector2(Float(predator.position.x - 100), Float(predator.position.y - 50)),
+                // rectMax: vector2(Float(predator.position.x + 50), Float(predator.position.y + 50))
+            )
+
+            for neighbor in neighborsInProximity {
+                print("neighbor:", (neighbor as! SKNode).name)
+                if (
+                    predator.name == "rock" && (neighbor as! SKNode).name.includes("scissors") || //TODO: includes doesn't exist
+                    predator.name == "paper" && (neighbor as! SKNode).name.includes("rock") ||
+                    predator.name == "scissors" && (neighbor as! SKNode).name.includes("paper")
+                ) {
+                    //rotate towards the prey
+                    let yDifference = (neighbor as! SKNode).position.y - predator.position.y
+                    let xDifference = (neighbor as! SKNode).position.x - predator.position.x
+                    let angleBetween = atan2(yDifference, xDifference)
+                    predator.zRotation = angleBetween
+                    //move towards the prey
+                    let xVelocity = cos(angleBetween) * predatorSpeed
+                    let yVelocity = sin(angleBetween) * predatorSpeed
+                    predator.position.x += xVelocity
+                    predator.position.y += yVelocity
+                }
+            }
         }
     }
     
@@ -170,7 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //  runs once per game frame
     override func update(_ currentTime: TimeInterval) {
         cyclePredators()
-        // creating a small chance of moving all bodies per frame
+        // creates a small chance of moving all bodies per frame
 //        let num = Int.random(in: 1 ... 10)
 //
 //        if num == 1 {
@@ -217,17 +224,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
         winnerLabel.run(scaleSequence)
 
-        print("R:", rockPopulation, "P:", paperPopulation, "S:", scissorsPopulation)
-
-//        let remainingRocks = self.childNodes(withName: "rock") //Value of type 'GameScene' has no member 'childNodes'
-//        let remainingPaper = self.childNodes(withName: "paper")
-//        let remainingScissors = self.childNodes(withName: "scissors")
-//
-//        if ((remainingRocks.count < 1 && remainingPaper.count < 1) ||
-//        (remainingRocks.count < 1 && remainingScissors.count < 1) ||
-//        (remainingPaper.count < 1 && remainingScissors.count < 1)) {
-//            runEndGame()
-//        }
+       if ((rockPopulation < 1 && paperPopulation < 1) ||
+       (rockPopulation < 1 && scissorsPopulation < 1) ||
+       (paperPopulation < 1 && scissorsPopulation < 1)) {
+           runEndGame()
+       }
     }
     
     // function that handles what happens when one predator reigns supreme
@@ -395,8 +396,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.addChild(newLife)
             
             //get the player moving
-            newLife.physicsBody!.applyImpulse(CGVector(dx: 5.0, dy: -5.0))
-            newLife.physicsBody!.applyForce(CGVector(dx: 5.0, dy: -5.0))
+            // newLife.physicsBody!.applyImpulse(CGVector(dx: 5.0, dy: -5.0)) //NOTE: they just float aimlessly lol
+            // newLife.physicsBody!.applyForce(CGVector(dx: 5.0, dy: -5.0))
         }
         
     }
