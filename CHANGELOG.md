@@ -2,6 +2,44 @@
 
 ---
 
+## 03262021
+
+### Added
+
+- chase prey functionality
+- flee predator functionality
+
+### Changed
+
+- mob motion to use physics impulses/forces rather than just incrementing the position x/y
+
+### Removed
+
+- mob rotation
+
+### Fixed
+
+- bug where mobs were only seeing "prey" within their own positions
+
+
+## 02232021
+
+### Added
+
+- motion to mobs
+
+### Changed
+
+- game over condition
+
+### Removed
+
+- none
+
+### Fixed
+
+- none
+
 ## 02192021
 
 ### Added
@@ -21,3 +59,9 @@
 ### Fixed
 
 - none
+
+
+# TODO
+
+- add a restart game button
+- add rotation back in once everything else works

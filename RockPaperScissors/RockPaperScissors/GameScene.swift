@@ -3,7 +3,7 @@ import GameplayKit
 
 // global variables that keep track of the game
 var winner = "¯|_(ツ)_/¯";
-let predatorSpeed:CGFloat = 3.0
+let predatorSpeed:CGFloat = 100
 var population: Int = 60
 var rockPopulation: Int = population/3
 var paperPopulation: Int = population/3
@@ -14,18 +14,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // label to track game state
     let winnerLabel = SKLabelNode(fontNamed: "the bold font")
     
-    // creating nodes that represents the rock, paper, and scissors
-    // let rock = SKSpriteNode(imageNamed: "rock")
-    // let paper = SKSpriteNode(imageNamed: "paper")
-    // let scissors = SKSpriteNode(imageNamed: "scissors")
-    
     // sound effect
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
     
     // Label that starts game when pressed
     let tapToStartLabel = SKLabelNode(fontNamed: "the bold font")
     
-    
+    //instantiate a tree to hold a map of nodes
+    let mobTree = GKRTree(maxNumberOfChildren: population)
+
     enum gameState {
         case preGame // prior to game start
         case inGame // when game state is during the game
@@ -49,16 +46,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func random (min: CGFloat, max: CGFloat) -> CGFloat {
         return random() * (max - min) + min
     }
+
+    func distance(from point1: CGPoint, to point2: CGPoint) -> CGFloat {
+        return hypot(point1.x - point2.x, point1.y - point2.y)
+    }
     
     
     // creating game area
     let gameArea: CGRect
     override init(size: CGSize) {
 
-        let maxAspectRatio: CGFloat = 16.0 / 9.0;
+        let maxAspectRatio: CGFloat = 19.5 / 9.0;
         let playableWidth = size.height / maxAspectRatio
         let margin = (size.width - playableWidth) / 2
-
         gameArea = CGRect(x: margin, y: 0, width: playableWidth, height: size.height)
 
         super.init(size: size)
@@ -67,7 +67,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     override func didMove(to view: SKView) {
         // set initial game state
@@ -103,86 +102,108 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(tapToStartLabel)
         
         // makes everything fade onto the scene
-        let fadeInAction = SKAction.fadeIn(witfuckkhDuration: 0.3)
+        let fadeInAction = SKAction.fadeIn(withDuration: 0.3)
         tapToStartLabel.run(fadeInAction)
     }
 
+    func chasePrey(predator: SKNode, prey: SKNode) {
+        let yDifference = prey.position.y - predator.position.y
+        let xDifference = prey.position.x - predator.position.x
+        let angleBetween = atan2(yDifference, xDifference)
+        //rotate towards the prey
+        // if (predator.zRotation != angleBetween) {
+        //     let rotate = SKAction.rotate(byAngle: angleBetween, duration: 1)
+        //     predator.run(rotate)
+        //     print("predator.zRotation:", predator.zRotation, "\n", "angleBetween:", angleBetween,"\n", "----", "\n", "\n")
+        // }
+        //move towards the prey
+        let xVelocity = cos(angleBetween) * predatorSpeed
+        let yVelocity = sin(angleBetween) * predatorSpeed
+        let velocity = CGVector(dx: CGFloat(xVelocity), dy: CGFloat(yVelocity))
+        predator.physicsBody?.velocity = velocity
+        predator.physicsBody!.applyImpulse(velocity)
+        predator.physicsBody!.applyForce(velocity)
+
+        // print(predator.physicsBody?.categoryBitMask, " is chasing ", prey.physicsBody?.categoryBitMask, " at a velocity of ", predator.physicsBody?.velocity, "\n", "----", "\n", "\n")
+    }
+
+    func fleePredator(predator: SKNode, prey: SKNode) {
+        let yDifference = prey.position.y - predator.position.y
+        let xDifference = prey.position.x - predator.position.x
+        let angleBetween = atan2(yDifference, xDifference)
+
+        let xVelocity = cos(angleBetween) * predatorSpeed
+        let yVelocity = sin(angleBetween) * predatorSpeed
+        let velocity = CGVector(dx: CGFloat(-xVelocity), dy: CGFloat(-yVelocity))
+        predator.physicsBody?.velocity = velocity
+        predator.physicsBody!.applyImpulse(velocity)
+        predator.physicsBody!.applyForce(velocity)
+        print(predator.physicsBody?.categoryBitMask, " is fleeing ", prey.physicsBody?.categoryBitMask, " at a velocity of ", predator.physicsBody?.velocity, "\n", "----", "\n", "\n")
+    }
+
     func cyclePredators() {
-        /*
-        notes from jim:
-
-        let neighbors: [SKNode] = neighborsInProximity.map { $0 as? SKNode }.compactMap({ $0 })
-
-        for neighbor in neighbors {
-
-            guard let nodeName = neighbor.name else {
-                continue
+            //pull the mobs within the game area
+            let mobsInGameArea = self.mobTree.elements(
+                inBoundingRectMin: vector2(Float(self.gameArea.minX), Float(self.gameArea.minY)),
+                rectMax: vector2(Float(self.gameArea.maxX), Float(self.gameArea.maxY))
+            )
+            let activeMobs: [SKNode] = mobsInGameArea.map { $0 as? SKNode }.compactMap({ $0 })
+        //enumerate scene's child nodes
+        enumerateChildNodes(withName: "*") { (mob, stop) in
+            guard let mobType = mob.physicsBody?.categoryBitMask else {
+                return
+            }
+            let mobX = Float(mob.frame.maxX) - Float(mob.frame.minX)
+            let mobY = Float(mob.frame.maxY) - Float(mob.frame.minY)
+            let mobPosition: CGPoint = CGPoint(x: CGFloat(mobX), y: CGFloat(mobY))
+            
+            let mobsSortedByDistance = activeMobs.sorted{ [unowned self] activeMob1, activeMob2 in 
+                let activeMob1X = Float(activeMob1.frame.maxX) - Float(activeMob1.frame.minX)
+                let activeMob1Y = Float(activeMob1.frame.maxY) - Float(activeMob1.frame.minY)
+                let activeMob2X = Float(activeMob2.frame.maxX) - Float(activeMob2.frame.minX)
+                let activeMob2Y = Float(activeMob2.frame.maxY) - Float(activeMob2.frame.minY)
+                let activeMob1Position: CGPoint = CGPoint(x: CGFloat(activeMob1X), y: CGFloat(activeMob1Y))
+                let activeMob2Position: CGPoint = CGPoint(x: CGFloat(activeMob2X), y: CGFloat(activeMob2Y))
+                
+                let delta1 = self.distance(from: mobPosition, to: activeMob1Position)
+                let delta2 = self.distance(from: mobPosition, to: activeMob2Position)
+                return delta1 < delta2
             }
 
-            let firstCondition = predator.name == "rock" && nodeName == "scissors"
-            let secondCondition = predator.name == "paper" && nodeName == "rock"
-            let thirdCondition = predator.name == "scissors" && nodeName == "paper"
-
-            guard firstCondition || secondCondition || thirdCondition else {
-                continue
-            }
-
-            // all the code you want to have execute
-
-        }
-        */
-        enumerateChildNodes(withName: "*") { (predator, stop) in
-            let minX = Float(predator.frame.minX)
-            let minY = Float(predator.frame.minY)
-            let maxX = Float(predator.frame.maxX)
-            let maxY = Float(predator.frame.maxY)
-
-            let neighborsTree = GKRTree(maxNumberOfChildren: 10)
-            neighborsTree.addElement(
-                predator,
-                boundingRectMin: vector2(minX, minY),
-                boundingRectMax: vector2(maxX, maxY),
-                splitStrategy: GKRTreeSplitStrategy.linear
-            )
-            let neighborsInProximity = neighborsTree.elements(
-                 inBoundingRectMin: vector2(minX, minY),
-                rectMax: vector2(maxX, maxY)
-                // inBoundingRectMin: vector2(Float(predator.position.x - 100), Float(predator.position.y - 50)),
-                // rectMax: vector2(Float(predator.position.x + 50), Float(predator.position.y + 50))
-            )
-
-            for neighbor in neighborsInProximity {
-                print("neighbor:", (neighbor as! SKNode).name)
-                if (
-                    predator.name == "rock" && (neighbor as! SKNode).name.includes("scissors") || //TODO: includes doesn't exist
-                    predator.name == "paper" && (neighbor as! SKNode).name.includes("rock") ||
-                    predator.name == "scissors" && (neighbor as! SKNode).name.includes("paper")
-                ) {
-                    //rotate towards the prey
-                    let yDifference = (neighbor as! SKNode).position.y - predator.position.y
-                    let xDifference = (neighbor as! SKNode).position.x - predator.position.x
-                    let angleBetween = atan2(yDifference, xDifference)
-                    predator.zRotation = angleBetween
-                    //move towards the prey
-                    let xVelocity = cos(angleBetween) * predatorSpeed
-                    let yVelocity = sin(angleBetween) * predatorSpeed
-                    predator.position.x += xVelocity
-                    predator.position.y += yVelocity
+            var nearestNeighbor: SKNode = SKSpriteNode()
+            var neighborType: UInt32 = mobType
+            for neighbor in mobsSortedByDistance {
+                guard let validBitMask = neighbor.physicsBody?.categoryBitMask else { continue }
+                if (validBitMask != mobType) {
+                    nearestNeighbor = neighbor
+                    neighborType = validBitMask
+                    break
                 }
             }
+            
+            // set up conditions under which mob would chase prey
+            let firstKillCondition = mobType == BodyType.Rock && neighborType == BodyType.Scissors
+            let secondKillCondition = mobType == BodyType.Paper && neighborType == BodyType.Rock
+            let thirdKillCondition = mobType == BodyType.Scissors && neighborType == BodyType.Paper
+
+            //set up conditions under which mob would flee predator
+            let firstFleeCondition = mobType == BodyType.Rock && neighborType == BodyType.Paper
+            let secondFleeCondition = mobType == BodyType.Paper && neighborType == BodyType.Scissors
+            let thirdFleeCondition = mobType == BodyType.Scissors && neighborType == BodyType.Rock
+
+            if firstKillCondition || secondKillCondition || thirdKillCondition {
+                self.chasePrey(predator: mob, prey: nearestNeighbor)
+            }
+            else if firstFleeCondition || secondFleeCondition || thirdFleeCondition {
+                self.fleePredator(predator: nearestNeighbor, prey: mob)
+            } 
         }
     }
     
   
-    //  runs once per game frame
+    // runs once per game frame
     override func update(_ currentTime: TimeInterval) {
-        cyclePredators()
-        // creates a small chance of moving all bodies per frame
-//        let num = Int.random(in: 1 ... 10)
-//
-//        if num == 1 {
-//            cyclePredators()
-//        }
+           cyclePredators()
     }
     
     // runs when the game starts
@@ -215,7 +236,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         // update labels to reflect death
-        winner = nowInTheLead
         winnerLabel.text = "In the lead: \(nowInTheLead)"
 
         // make lable grow and shrink when something dies
@@ -224,9 +244,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
         winnerLabel.run(scaleSequence)
 
-       if ((rockPopulation < 1 && paperPopulation < 1) ||
-       (rockPopulation < 1 && scissorsPopulation < 1) ||
-       (paperPopulation < 1 && scissorsPopulation < 1)) {
+        let rockWins = (rockPopulation == population)
+        let paperWins = (paperPopulation == population)
+        let scissorsWin = (scissorsPopulation == population)
+
+        if (rockWins) { winner = "rock" }
+        if (paperWins) { winner = "paper" }
+        if (scissorsWin) { winner = "scissors" }
+
+       if (rockWins || paperWins || scissorsWin) {
            runEndGame()
        }
     }
@@ -275,41 +301,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // function that runs when objects collide with one another
     func didBegin(_ contact: SKPhysicsContact) {
-        // create 2 physcis bodies
-        var player1 = SKPhysicsBody()
-        var player2 = SKPhysicsBody()
-        
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            player1 = contact.bodyA
-            player2 = contact.bodyB
-        } else {
-            player1 = contact.bodyB
-            player2 = contact.bodyA
-        }
+        // create 2 physics bodies
+        let mob1 = contact.bodyA
+        let mob2 = contact.bodyB
+        // capture their nodes
+        let mob1Node = mob1.node as? SKSpriteNode
+        let mob2Node = mob2.node as? SKSpriteNode
 
-        let player1Node = player1.node as? SKSpriteNode
-        let player2Node = player2.node as? SKSpriteNode
-        
-        switch (player1.categoryBitMask, player2.categoryBitMask) {
+        switch (mob1.categoryBitMask, mob2.categoryBitMask) {
             case (BodyType.Rock, BodyType.Rock):
                 break;
             case (BodyType.Rock, BodyType.Paper):
-                player1Node?.texture = SKTexture(imageNamed: "paper");
-                player1.categoryBitMask = BodyType.Paper;
+                mob1Node?.texture = SKTexture(imageNamed: "paper");
+                mob1.categoryBitMask = BodyType.Paper;
+                mob1Node?.name = "paper";
                 rockPopulation -= 1;
                 paperPopulation += 1;
                 checkWinner(); 
                 break;
             case (BodyType.Rock, BodyType.Scissors):
-                player2Node?.texture = SKTexture(imageNamed: "rock");
-                player2.categoryBitMask = BodyType.Rock;
+                mob2Node?.texture = SKTexture(imageNamed: "rock");
+                mob2.categoryBitMask = BodyType.Rock;
+                mob2Node?.name = "rock";
                 scissorsPopulation -= 1;
                 rockPopulation += 1;
                 checkWinner(); 
                 break;
             case (BodyType.Paper, BodyType.Rock):
-                player2Node?.texture = SKTexture(imageNamed: "paper");
-                player2.categoryBitMask = BodyType.Paper;
+                mob2Node?.texture = SKTexture(imageNamed: "paper");
+                mob2.categoryBitMask = BodyType.Paper;
+                mob2Node?.name = "paper";
                 rockPopulation -= 1;
                 paperPopulation += 1;
                 checkWinner(); 
@@ -317,22 +338,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             case (BodyType.Paper, BodyType.Paper):
                 break;
             case (BodyType.Paper, BodyType.Scissors):
-                player1Node?.texture = SKTexture(imageNamed: "scissors");
-                player1.categoryBitMask = BodyType.Scissors;
+                mob1Node?.texture = SKTexture(imageNamed: "scissors");
+                mob1.categoryBitMask = BodyType.Scissors;
                 paperPopulation -= 1;
                 scissorsPopulation += 1;
                 checkWinner(); 
                 break;
             case (BodyType.Scissors, BodyType.Rock):
-                player1Node?.texture = SKTexture(imageNamed: "rock");
-                player1.categoryBitMask = BodyType.Rock;
+                mob1Node?.texture = SKTexture(imageNamed: "rock");
+                mob1.categoryBitMask = BodyType.Rock;
+                mob1Node?.name = "rock";
                 scissorsPopulation -= 1;
                 rockPopulation += 1;
                 checkWinner(); 
                 break;
             case (BodyType.Scissors, BodyType.Paper):
-                player2Node?.texture = SKTexture(imageNamed: "scissors");
-                player2.categoryBitMask = BodyType.Scissors;
+                mob2Node?.texture = SKTexture(imageNamed: "scissors");
+                mob2.categoryBitMask = BodyType.Scissors;
+                mob2Node?.name = "scissors";
                 paperPopulation -= 1;
                 scissorsPopulation += 1;
                 checkWinner(); 
@@ -370,13 +393,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         for _ in populationField {
             // create a random x and y to spawn the new life at
-            let randomXstart = random(min: gameArea.minX, max: gameArea.maxX)
-            let randomYstart = random(min: gameArea.minY, max: gameArea.maxY)
-//            let randomXend = random(min: gameArea.minX , max: gameArea.maxX)
+            let randomXstart = random(min: self.gameArea.minX, max: self.gameArea.maxX)
+            let randomYstart = random(min: self.gameArea.minY, max: self.gameArea.maxY)
             
             // start and end points of the spawn
             let startPoint = CGPoint(x: randomXstart , y: randomYstart)
-//            let endPoint = CGPoint(x: randomXend,  y: -self.size.height * 0.2)
+
+            //create bounds around the screen the life can't leave
+            let xRange = SKRange(lowerLimit: self.gameArea.minX, upperLimit: self.gameArea.maxX)
+            let yRange = SKRange(lowerLimit: self.gameArea.minY, upperLimit: self.gameArea.maxY)
             
             //create player object and all its attributes
             let newLife = SKSpriteNode(imageNamed: name)
@@ -384,16 +409,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             newLife.setScale(0.8)
             newLife.position = startPoint
             newLife.zPosition = 2
+            newLife.constraints = [SKConstraint.positionX(xRange, y:yRange)]
             newLife.physicsBody = SKPhysicsBody(rectangleOf: newLife.size)
             newLife.physicsBody!.affectedByGravity = false
             newLife.physicsBody!.friction = 0
-            newLife.physicsBody!.restitution = 0.5
-            // newLife.physicsBody!.linearDamping = 0
-            // newLife.physicsBody!.angularDamping = 0
+            newLife.physicsBody!.restitution = 0
+            newLife.physicsBody!.linearDamping = 0
+            newLife.physicsBody!.angularDamping = 0
             newLife.physicsBody!.categoryBitMask = physicsBody
             newLife.physicsBody!.collisionBitMask = physicsBody
             newLife.physicsBody!.contactTestBitMask = EnemyType1 | EnemyType2
             self.addChild(newLife)
+            //capture the new location in the tree
+            self.mobTree.addElement(
+                newLife,
+                boundingRectMin: vector2(Float(newLife.frame.minX), Float(newLife.frame.minY)),
+                boundingRectMax: vector2(Float(newLife.frame.maxX), Float(newLife.frame.maxY)),
+                splitStrategy: GKRTreeSplitStrategy.linear
+            )
             
             //get the player moving
             // newLife.physicsBody!.applyImpulse(CGVector(dx: 5.0, dy: -5.0)) //NOTE: they just float aimlessly lol
