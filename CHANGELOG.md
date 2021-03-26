@@ -64,4 +64,5 @@
 # TODO
 
 - add a restart game button
+- add a delay between game over condition being met and game over screen showing
 - add rotation back in once everything else works
