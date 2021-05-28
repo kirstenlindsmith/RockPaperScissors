@@ -2,7 +2,9 @@ import SpriteKit
 import GameplayKit
 
 // global variables that keep track of the game
-var winner = "¯|_(ツ)_/¯";
+let defaultWinner = "¯|_(ツ)_/¯"
+var nowInTheLead = defaultWinner
+var winner = defaultWinner
 let predatorSpeed:CGFloat = 100
 var population: Int = 60
 var rockPopulation: Int = population/3
@@ -70,8 +72,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         // set initial game state
-        winner = "¯|_(ツ)_/¯"
-        
+        winner = defaultWinner
+
         self.physicsWorld.contactDelegate = self;
         // prevent anything from leaving the pen
         let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
@@ -110,7 +112,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yDifference = prey.position.y - predator.position.y
         let xDifference = prey.position.x - predator.position.x
         let angleBetween = atan2(yDifference, xDifference)
-        //rotate towards the prey
+        //rotate towards the prey //TODO: just spins forever because new prey is chosen too often
         // if (predator.zRotation != angleBetween) {
         //     let rotate = SKAction.rotate(byAngle: angleBetween, duration: 1)
         //     predator.run(rotate)
@@ -123,8 +125,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         predator.physicsBody?.velocity = velocity
         predator.physicsBody!.applyImpulse(velocity)
         predator.physicsBody!.applyForce(velocity)
-
-        // print(predator.physicsBody?.categoryBitMask, " is chasing ", prey.physicsBody?.categoryBitMask, " at a velocity of ", predator.physicsBody?.velocity, "\n", "----", "\n", "\n")
     }
 
     func fleePredator(predator: SKNode, prey: SKNode) {
@@ -138,7 +138,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         predator.physicsBody?.velocity = velocity
         predator.physicsBody!.applyImpulse(velocity)
         predator.physicsBody!.applyForce(velocity)
-        print(predator.physicsBody?.categoryBitMask, " is fleeing ", prey.physicsBody?.categoryBitMask, " at a velocity of ", predator.physicsBody?.velocity, "\n", "----", "\n", "\n")
+        // print(predator.physicsBody?.categoryBitMask, " is fleeing ", prey.physicsBody?.categoryBitMask, " at a velocity of ", predator.physicsBody?.velocity, "\n", "----", "\n", "\n")
     }
 
     func cyclePredators() {
@@ -203,7 +203,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
     // runs once per game frame
     override func update(_ currentTime: TimeInterval) {
-           cyclePredators()
+        cyclePredators()
     }
     
     // runs when the game starts
@@ -219,30 +219,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnNewLife(name: "paper", physicsBody: BodyType.Paper)
         spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors)
     }
-    
-    // runs when a predator comes into contact with its potential prey, or its demise
-    func checkWinner() {
-        var nowInTheLead: String = "¯|_(ツ)_/¯"
-        if (scissorsPopulation > paperPopulation) {
-            if (scissorsPopulation as Int > rockPopulation as Int) {
-                nowInTheLead = "scissors"
-            } else {
-                nowInTheLead = "rock"
-            }
-        } else if (paperPopulation > rockPopulation) {
-            nowInTheLead = "paper"
-        } else {
-            nowInTheLead = "rock"
-            
-        }
-        // update labels to reflect death
-        winnerLabel.text = "In the lead: \(nowInTheLead)"
 
-        // make lable grow and shrink when something dies
+    // make lable grow and shrink
+    func animateLabel() {
         let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
         let scaleDown = SKAction.scale(to: 1, duration: 0.2)
         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
-        winnerLabel.run(scaleSequence)
+        if (winnerLabel.xScale.isEqual(to: CGFloat(1))) {
+            winnerLabel.run(scaleSequence)
+        }
+    }
+    
+    // runs when a predator comes into contact with its potential prey, or its demise
+    func checkWinner() {
+        if (scissorsPopulation > paperPopulation) {
+            if (scissorsPopulation as Int > rockPopulation as Int) {
+                if (nowInTheLead != "scissors") {
+                    nowInTheLead = "scissors"
+                    animateLabel()
+                }
+            } else if (nowInTheLead != "rock") {
+                nowInTheLead = "rock"
+                animateLabel()
+            }
+        } else if (paperPopulation > rockPopulation && nowInTheLead != "paper") {
+            nowInTheLead = "paper"
+            animateLabel()
+        } else if (nowInTheLead != "rock") {
+            nowInTheLead = "rock"
+            animateLabel()
+        }
+        // update labels to reflect death
+        winnerLabel.text = "In the lead: \(nowInTheLead)"
 
         let rockWins = (rockPopulation == population)
         let paperWins = (paperPopulation == population)
@@ -253,7 +261,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (scissorsWin) { winner = "scissors" }
 
        if (rockWins || paperWins || scissorsWin) {
-           runEndGame()
+           run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: 1.5),
+            SKAction.run( runEndGame )
+            ])))
        }
     }
     
@@ -439,7 +450,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if currentGameState == gameState.preGame {
             startGame()
-        } 
+        }
     }
     
     // override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

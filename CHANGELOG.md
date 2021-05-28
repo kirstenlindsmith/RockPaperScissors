@@ -2,6 +2,25 @@
 
 ---
 
+## 05282021
+
+### Added
+
+- delay after game has been won before showing game over screen
+
+### Changed
+
+- none
+
+### Removed
+
+- none
+
+### Fixed
+
+- in the lead label text to finish grow/shrink animation before starting over
+
+
 ## 03262021
 
 ### Added
