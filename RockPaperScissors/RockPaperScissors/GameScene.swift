@@ -215,9 +215,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let deleteSequence = SKAction.sequence([fadeOutAction, deleteAction])
         tapToStartLabel.run(deleteSequence)
 
-        spawnNewLife(name: "rock", physicsBody: BodyType.Rock)
-        spawnNewLife(name: "paper", physicsBody: BodyType.Paper)
-        spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors)
+        spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: rockPopulation)
+        spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: paperPopulation)
+        spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: scissorsPopulation)
+
+        let addRockButton = SKButtonNode(texture: SKTexture(imageNamd: "addRock")) {
+            spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1)
+        }
+        let addPaperButton = SKButtonNode(texture: SKTexture(imageNamd: "addPaper")) {
+            spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1)
+        }
+        let addScissorsButton = SKButtonNode(texture: SKTexture(imageNamd: "addScissors")) {
+            spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1)
+        }
+        addRockButton.zPosition = 100
+        addPaperButton.zPosition = 100
+        addScissorsButton.zPosition = 100
+        addRockButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        addPaperButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        addScissorsButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        addRockButton.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.7)
+        addPaperButton.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.6)
+        addScissorsButton.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.5)
+        addChild(addRockButton)
+        addChild(addPaperButton)
+        addChild(addScissorsButton)
     }
 
     // make lable grow and shrink
@@ -379,8 +401,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // function that spawns a new generation
-    func spawnNewLife(name: String, physicsBody: UInt32) {
-        let populationField: Array<Float> = Array(repeating: 0, count: population/3);
+    func spawnNewLife(name: String, physicsBody: UInt32, count: Int) {
+        let populationField: Array<Float> = Array(repeating: 0, count: count);
         var EnemyType1: UInt32;
         var EnemyType2: UInt32;
 
