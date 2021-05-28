@@ -22,6 +22,7 @@
 		B8CDBC0D2236E2B60040DF41 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CDBC0C2236E2B60040DF41 /* MainMenuScene.swift */; };
 		B8CDBC11223773290040DF41 /* Superboy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC10223773290040DF41 /* Superboy.mp3 */; };
 		B8CDBC13223774E40040DF41 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC12223774E40040DF41 /* appIcon.png */; };
+		E444DD4026617CCE006A6327 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E444DD3F26617CCE006A6327 /* SKButtonNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,14 +40,11 @@
 		B8C9C99B222A47FD009B9E10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8C9C99E222A47FD009B9E10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8C9C9A0222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockPaperScissorsTests.swift; sourceTree = "<group>"; };
-		B8C9C9AB222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockPaperScissorsUITests.swift; sourceTree = "<group>"; };
-		B8C9C9B6222A47FD009B9E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8C9C9C2222A59DB009B9E10 /* laser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = laser.wav; sourceTree = "<group>"; };
 		B8CDBC0C2236E2B60040DF41 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		B8CDBC10223773290040DF41 /* Superboy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Superboy.mp3; sourceTree = "<group>"; };
 		B8CDBC12223774E40040DF41 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
+		E444DD3F26617CCE006A6327 /* SKButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +62,6 @@
 			isa = PBXGroup;
 			children = (
 				B8C9C98D222A47FA009B9E10 /* RockPaperScissors */,
-				B8C9C9A8222A47FD009B9E10 /* RockPaperScissorsTests */,
-				B8C9C9B3222A47FD009B9E10 /* RockPaperScissorsUITests */,
 				B8C9C98C222A47FA009B9E10 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,26 +94,9 @@
 				B8C9C99D222A47FD009B9E10 /* LaunchScreen.storyboard */,
 				B8C9C9A0222A47FD009B9E10 /* Info.plist */,
 				B8CDBC12223774E40040DF41 /* appIcon.png */,
+				E444DD3F26617CCE006A6327 /* SKButtonNode.swift */,
 			);
 			path = RockPaperScissors;
-			sourceTree = "<group>";
-		};
-		B8C9C9A8222A47FD009B9E10 /* RockPaperScissorsTests */ = {
-			isa = PBXGroup;
-			children = (
-				B8C9C9A9222A47FD009B9E10 /* RockPaperScissorsTests.swift */,
-				B8C9C9AB222A47FD009B9E10 /* Info.plist */,
-			);
-			path = RockPaperScissorsTests;
-			sourceTree = "<group>";
-		};
-		B8C9C9B3222A47FD009B9E10 /* RockPaperScissorsUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B8C9C9B4222A47FD009B9E10 /* RockPaperScissorsUITests.swift */,
-				B8C9C9B6222A47FD009B9E10 /* Info.plist */,
-			);
-			path = RockPaperScissorsUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,6 +192,7 @@
 				B8CDBC0D2236E2B60040DF41 /* MainMenuScene.swift in Sources */,
 				B8C9C995222A47FA009B9E10 /* GameScene.swift in Sources */,
 				B8C9C997222A47FA009B9E10 /* GameViewController.swift in Sources */,
+				E444DD4026617CCE006A6327 /* SKButtonNode.swift in Sources */,
 				B891D6492231E6B900E2AE39 /* GameOverScene.swift in Sources */,
 				B8C9C98F222A47FA009B9E10 /* AppDelegate.swift in Sources */,
 			);

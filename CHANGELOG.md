@@ -7,6 +7,7 @@
 ### Added
 
 - delay after game has been won before showing game over screen
+- buttons to add additional game pieces during play
 
 ### Changed
 
@@ -19,7 +20,6 @@
 ### Fixed
 
 - in the lead label text to finish grow/shrink animation before starting over
-
 
 ## 03262021
 
@@ -39,7 +39,6 @@
 ### Fixed
 
 - bug where mobs were only seeing "prey" within their own positions
-
 
 ## 02232021
 
@@ -78,7 +77,6 @@
 ### Fixed
 
 - none
-
 
 # TODO
 

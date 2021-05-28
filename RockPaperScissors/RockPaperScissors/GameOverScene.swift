@@ -20,7 +20,7 @@ class GameOverScene: SKScene {
         // creates score label and sets its attributes
         let scoreLabel = SKLabelNode(fontNamed: "the bold font")
         scoreLabel.text = "Winner: \(winner)"
-        scoreLabel.fontSize = 125
+        scoreLabel.fontSize = 100
         scoreLabel.fontColor = SKColor.black
         scoreLabel.position = CGPoint(x: self.size.width/2, y: self.size.height*0.55)
         scoreLabel.zPosition = 1

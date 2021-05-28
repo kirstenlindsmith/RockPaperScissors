@@ -6,15 +6,26 @@ let defaultWinner = "¯|_(ツ)_/¯"
 var nowInTheLead = defaultWinner
 var winner = defaultWinner
 let predatorSpeed:CGFloat = 100
-var population: Int = 60
-var rockPopulation: Int = population/3
-var paperPopulation: Int = population/3
-var scissorsPopulation: Int = population/3
+
+let startingPopulation = 60
+let startingRockPop = startingPopulation/3
+let startingPaperPop = startingPopulation/3
+let startingScissorsPop = startingPopulation/3
+
+var population = startingPopulation
+var rockPopulation = startingRockPop
+var paperPopulation = startingPaperPop
+var scissorsPopulation = startingScissorsPop
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     // label to track game state
     let winnerLabel = SKLabelNode(fontNamed: "the bold font")
+
+    //buttons
+    var addRockButton: SKButtonNode
+    var addPaperButton: SKButtonNode
+    var addScissorsButton: SKButtonNode
     
     // sound effect
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
@@ -62,7 +73,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let playableWidth = size.height / maxAspectRatio
         let margin = (size.width - playableWidth) / 2
         gameArea = CGRect(x: margin, y: 0, width: playableWidth, height: size.height)
-
+        self.addRockButton = SKButtonNode(texture: SKTexture(imageNamed: "addRock"))
+        self.addPaperButton = SKButtonNode(texture: SKTexture(imageNamed: "addPaper"))
+        self.addScissorsButton = SKButtonNode(texture: SKTexture(imageNamed: "addScissors"))
         super.init(size: size)
     }
 
@@ -219,28 +232,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: paperPopulation)
         spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: scissorsPopulation)
 
-        let addRockButton = SKButtonNode(texture: SKTexture(imageNamd: "addRock")) {
-            spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1)
+        addRockButton = SKButtonNode(texture: SKTexture(imageNamed: "addRock")) {
+            self.spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1)
+            population += 1
+            rockPopulation += 1
         }
-        let addPaperButton = SKButtonNode(texture: SKTexture(imageNamd: "addPaper")) {
-            spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1)
+        addPaperButton = SKButtonNode(texture: SKTexture(imageNamed: "addPaper")) {
+            self.spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1)
+            population += 1
+            paperPopulation += 1
         }
-        let addScissorsButton = SKButtonNode(texture: SKTexture(imageNamd: "addScissors")) {
-            spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1)
+        addScissorsButton = SKButtonNode(texture: SKTexture(imageNamed: "addScissors")) {
+            self.spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1)
+            population += 1
+            scissorsPopulation += 1
         }
         addRockButton.zPosition = 100
         addPaperButton.zPosition = 100
         addScissorsButton.zPosition = 100
-        addRockButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        addPaperButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        addScissorsButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        addRockButton.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.7)
-        addPaperButton.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.6)
-        addScissorsButton.position = CGPoint(x: self.size.width * 0.23, y: self.size.height * 0.5)
+        addRockButton.position = CGPoint(x: self.size.width * 0.25, y: self.size.height * 0.8)
+        addPaperButton.position = CGPoint(x: self.size.width * 0.25, y: self.size.height * 0.7)
+        addScissorsButton.position = CGPoint(x: self.size.width * 0.25, y: self.size.height * 0.6)
         addChild(addRockButton)
         addChild(addPaperButton)
         addChild(addScissorsButton)
     }
+
 
     // make lable grow and shrink
     func animateLabel() {
@@ -249,6 +266,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
         if (winnerLabel.xScale.isEqual(to: CGFloat(1))) {
             winnerLabel.run(scaleSequence)
+        }
+    }
+
+    func animateButton(target: SKButtonNode) {
+        let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
+        let scaleDown = SKAction.scale(to: 1, duration: 0.2)
+        let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
+        if (target.xScale.isEqual(to: CGFloat(1))) {
+            target.run(scaleSequence)
         }
     }
     
@@ -297,6 +323,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // removes everything from screen
         self.removeAllActions()
+
+        //reset the population states
+        population = startingPopulation
+        rockPopulation = startingRockPop
+        paperPopulation = startingPaperPop
+        scissorsPopulation = startingScissorsPop
         
         // stops scissors from spawning
         self.enumerateChildNodes(withName: "scissors"){
@@ -472,38 +504,70 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if currentGameState == gameState.preGame {
             startGame()
-        }
+        } 
+        //TODO: resize buttons on click. arghhh
+        // else {
+        //     for touch: AnyObject in touches {
+        //         let pointOfTouch = touch.location(in: self)
+        //         let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
+        //         let scaleDown = SKAction.scale(to: 1, duration: 0.2)
+        //         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
+        //         print("touch is at", pointOfTouch)
+        //         print("scissors button is at size", addScissorsButton.size)
+        //         if addRockButton.contains(pointOfTouch) {
+        //             addRockButton.run(scaleSequence)
+        //         }
+        //         if addPaperButton.contains(pointOfTouch) {
+        //             addPaperButton.run(scaleSequence)
+        //         }
+        //         if addScissorsButton.contains(pointOfTouch) {
+        //             addScissorsButton.run(scaleSequence)
+        //         }
+        //     }
+        // }
     }
+
     
-    // override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    //     // moves the ship left and right by dragging on the screen
-    //     for touch: AnyObject in touches
-    //     {
-    //         let pointOfTouch = touch.location(in: self)
-    //         let previousTouch = touch.previousLocation(in: self)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // for touch: AnyObject in touches
+        // {
+        //     let scaleBack = SKAction.scale(to: 1, duration: 0.25)
+        //     let pointOfTouch = touch.location(in: self)
+        //     if (!addRockButton.contains(pointOfTouch)) {
+        //         addRockButton.run(scaleBack)
+        //     }
+        //     if (!addPaperButton.contains(pointOfTouch)) {
+        //         addPaperButton.run(scaleBack)
+        //     }
+        //     if (!addScissorsButton.contains(pointOfTouch)) {
+        //         addScissorsButton.run(scaleBack)
+        //     }
+
+        //     //FROM SPACE INVADERS GAME TEMPLATE:
+        //     // let previousTouch = touch.previousLocation(in: self)
             
-    //         let amountDragged = pointOfTouch.x - previousTouch.x
+        //     // let amountDragged = pointOfTouch.x - previousTouch.x
             
-    //         if currentGameState == gameState.inGame
-    //         {
-    //              rock.position.x += amountDragged
-    //         }
+        //     // if currentGameState == gameState.inGame
+        //     // {
+        //     //      rock.position.x += amountDragged
+        //     // }
 
             
-    //         //when rock moves to far to right, bump back into game area
-    //         if rock.position.x > gameArea.maxX - rock.size.width/2
-    //         {
-    //             rock.position.x = gameArea.maxX - rock.size.width/2
-    //         }
+        //     // //when rock moves to far to right, bump back into game area
+        //     // if rock.position.x > gameArea.maxX - rock.size.width/2
+        //     // {
+        //     //     rock.position.x = gameArea.maxX - rock.size.width/2
+        //     // }
 
-    //         //when rock moves to far to left, bump back into game area
-    //         if rock.position.x < gameArea.minX + rock.size.width/2
-    //         {
-    //             rock.position.x = gameArea.minX + rock.size.width/2
-    //         }
+        //     // //when rock moves to far to left, bump back into game area
+        //     // if rock.position.x < gameArea.minX + rock.size.width/2
+        //     // {
+        //     //     rock.position.x = gameArea.minX + rock.size.width/2
+        //     // }
             
-    //     }
+        // }
     
-    // }
+    }
 
 }
