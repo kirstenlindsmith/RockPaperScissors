@@ -250,9 +250,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addRockButton.zPosition = 100
         addPaperButton.zPosition = 100
         addScissorsButton.zPosition = 100
-        addRockButton.position = CGPoint(x: self.size.width * 0.25, y: self.size.height * 0.8)
-        addPaperButton.position = CGPoint(x: self.size.width * 0.25, y: self.size.height * 0.7)
-        addScissorsButton.position = CGPoint(x: self.size.width * 0.25, y: self.size.height * 0.6)
+        addRockButton.position = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.8)
+        addPaperButton.position = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.7)
+        addScissorsButton.position = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.6)
         addChild(addRockButton)
         addChild(addPaperButton)
         addChild(addScissorsButton)
