@@ -36,13 +36,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //instantiate a tree to hold a map of nodes
     let mobTree = GKRTree(maxNumberOfChildren: population)
 
+    //game progress state
     enum gameState {
         case preGame // prior to game start
         case inGame // when game state is during the game
         case afterGame // when game finishes
     }
-    
     var currentGameState = gameState.preGame
+    
+    //edit state
+    enum editState {
+        case off
+        case rock
+        case paper
+        case scissors
+    }
+    var currentEditState = editState.off
     
     // setting physics of objects for later use
     struct BodyType {
@@ -227,22 +236,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let deleteAction = SKAction.removeFromParent()
         let deleteSequence = SKAction.sequence([fadeOutAction, deleteAction])
         tapToStartLabel.run(deleteSequence)
+        let addRockCoords = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.8)
+        let addPaperCoords = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.7)
+        let addScissorsCoords = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.6)
 
         spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: rockPopulation)
         spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: paperPopulation)
         spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: scissorsPopulation)
 
         addRockButton = SKButtonNode(texture: SKTexture(imageNamed: "addRock")) {
+            self.currentEditState = editState.rock
+            drawCircle(on: self, at: addRockCoords, color: SKColor.init(red: 50, green: 0, blue: 0, alpha: 80), size: 100)
             self.spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1)
             population += 1
             rockPopulation += 1
         }
         addPaperButton = SKButtonNode(texture: SKTexture(imageNamed: "addPaper")) {
+            self.currentEditState = editState.paper
+            drawCircle(on: self, at: addPaperCoords, color: SKColor.init(red: 50, green: 0, blue: 0, alpha: 80), size: 100)
             self.spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1)
             population += 1
             paperPopulation += 1
         }
         addScissorsButton = SKButtonNode(texture: SKTexture(imageNamed: "addScissors")) {
+            self.currentEditState = editState.scissors
+            drawCircle(on: self, at: addScissorsCoords, color: SKColor.init(red: 50, green: 0, blue: 0, alpha: 80), size: 100)
             self.spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1)
             population += 1
             scissorsPopulation += 1
@@ -250,9 +268,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addRockButton.zPosition = 100
         addPaperButton.zPosition = 100
         addScissorsButton.zPosition = 100
-        addRockButton.position = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.8)
-        addPaperButton.position = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.7)
-        addScissorsButton.position = CGPoint(x: self.size.width * 0.30, y: self.size.height * 0.6)
+        addRockButton.position = addRockCoords
+        addPaperButton.position = addPaperCoords
+        addScissorsButton.position = addScissorsCoords
         addChild(addRockButton)
         addChild(addPaperButton)
         addChild(addScissorsButton)
