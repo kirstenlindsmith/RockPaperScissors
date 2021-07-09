@@ -7,7 +7,7 @@ var nowInTheLead = defaultWinner
 var winner = defaultWinner
 let predatorSpeed:CGFloat = 100
 
-let startingPopulation = 60
+let startingPopulation = 30
 let startingRockPop = startingPopulation/3
 let startingPaperPop = startingPopulation/3
 let startingScissorsPop = startingPopulation/3
@@ -243,27 +243,79 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: rockPopulation)
         spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: paperPopulation)
         spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: scissorsPopulation)
+        
+        let rockButtonImages = [
+            "addRock",
+            "doneRock"
+        ]
+        let paperButtonImages = [
+            "addPaper",
+            "donePaper"
+        ]
+        let scissorsButtonImages = [
+            "addScissors",
+            "doneScissors"
+        ]
+        
+        func resetEditState(){
+            self.currentEditState = editState.off
+            addRockButton.texture = SKTexture(imageNamed: rockButtonImages[0])
+            addPaperButton.texture = SKTexture(imageNamed: paperButtonImages[0])
+            addScissorsButton.texture = SKTexture(imageNamed: scissorsButtonImages[0])
+        }
+        
+        func changeButtonImage(button: String) {
+            if (button == "rock") {
+                if self.currentEditState != editState.rock {
+                    self.currentEditState = editState.rock
+                    addRockButton.texture = SKTexture(imageNamed: rockButtonImages[1])
+                    addPaperButton.texture = SKTexture(imageNamed: paperButtonImages[0])
+                    addScissorsButton.texture = SKTexture(imageNamed: scissorsButtonImages[0])
+                } else {
+                    resetEditState()
+                }
+            } else if (button == "paper") {
+                if self.currentEditState != editState.paper {
+                    self.currentEditState = editState.paper
+                    addPaperButton.texture = SKTexture(imageNamed: paperButtonImages[1])
+                    addRockButton.texture = SKTexture(imageNamed: rockButtonImages[0])
+                    addScissorsButton.texture = SKTexture(imageNamed: scissorsButtonImages[0])
+                } else {
+                    resetEditState()
+                }
+            } else if (button == "scissors") {
+                if self.currentEditState != editState.scissors {
+                    self.currentEditState = editState.scissors
+                    addScissorsButton.texture = SKTexture(imageNamed: scissorsButtonImages[1])
+                    addRockButton.texture = SKTexture(imageNamed: rockButtonImages[0])
+                    addPaperButton.texture = SKTexture(imageNamed: paperButtonImages[0])
+                } else {
+                    resetEditState()
+                }
+            }
+        }
+                               
 
-        addRockButton = SKButtonNode(texture: SKTexture(imageNamed: "addRock")) {
-            self.currentEditState = editState.rock
-            drawCircle(on: self, at: addRockCoords, color: SKColor.init(red: 50, green: 0, blue: 0, alpha: 80), size: 100)
-            self.spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1)
-            population += 1
-            rockPopulation += 1
+        addRockButton = SKButtonNode(texture: SKTexture(imageNamed: rockButtonImages[0])) {
+            changeButtonImage(button: "rock")
+            self.animateButton(target: self.addRockButton)
+//            self.spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1)
+//            population += 1
+//            rockPopulation += 1
         }
-        addPaperButton = SKButtonNode(texture: SKTexture(imageNamed: "addPaper")) {
-            self.currentEditState = editState.paper
-            drawCircle(on: self, at: addPaperCoords, color: SKColor.init(red: 50, green: 0, blue: 0, alpha: 80), size: 100)
-            self.spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1)
-            population += 1
-            paperPopulation += 1
+        addPaperButton = SKButtonNode(texture: SKTexture(imageNamed: paperButtonImages[0])) {
+            changeButtonImage(button: "paper")
+            self.animateButton(target: self.addPaperButton)
+//            self.spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1)
+//            population += 1
+//            paperPopulation += 1
         }
-        addScissorsButton = SKButtonNode(texture: SKTexture(imageNamed: "addScissors")) {
-            self.currentEditState = editState.scissors
-            drawCircle(on: self, at: addScissorsCoords, color: SKColor.init(red: 50, green: 0, blue: 0, alpha: 80), size: 100)
-            self.spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1)
-            population += 1
-            scissorsPopulation += 1
+        addScissorsButton = SKButtonNode(texture: SKTexture(imageNamed: scissorsButtonImages[0])) {
+            changeButtonImage(button: "scissors")
+            self.animateButton(target: self.addScissorsButton)
+//            self.spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1)
+//            population += 1
+//            scissorsPopulation += 1
         }
         addRockButton.zPosition = 100
         addPaperButton.zPosition = 100
@@ -347,25 +399,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rockPopulation = startingRockPop
         paperPopulation = startingPaperPop
         scissorsPopulation = startingScissorsPop
-        
+
         // stops scissors from spawning
         self.enumerateChildNodes(withName: "scissors"){
             scissors, stop in
             scissors.removeAllActions()
         }
-        
+
         // stops rocks from spawning
         self.enumerateChildNodes(withName: "rock"){
             rock, stop in
             rock.removeAllActions()
         }
-        
+
         // stops paper from spawning
         self.enumerateChildNodes(withName: "paper"){
             paper, stop in
             paper.removeAllActions()
         }
-        
+
         // changes scenes
         let changeSceneAction = SKAction.run(changeScene)
         let waitToChangeScence = SKAction.wait(forDuration: 1)
@@ -451,7 +503,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // function that spawns a new generation
-    func spawnNewLife(name: String, physicsBody: UInt32, count: Int) {
+    func spawnNewLife(name: String, physicsBody: UInt32, count: Int, location: CGPoint? = nil) {
         let populationField: Array<Float> = Array(repeating: 0, count: count);
         var EnemyType1: UInt32;
         var EnemyType2: UInt32;
@@ -480,7 +532,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let randomYstart = random(min: self.gameArea.minY, max: self.gameArea.maxY)
             
             // start and end points of the spawn
-            let startPoint = CGPoint(x: randomXstart , y: randomYstart)
+            
+            let randomStart = CGPoint(x: randomXstart , y: randomYstart)
 
             //create bounds around the screen the life can't leave
             let xRange = SKRange(lowerLimit: self.gameArea.minX, upperLimit: self.gameArea.maxX)
@@ -490,7 +543,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let newLife = SKSpriteNode(imageNamed: name)
             newLife.name = name
             newLife.setScale(0.8)
-            newLife.position = startPoint
+            newLife.position = location ?? randomStart
             newLife.zPosition = 2
             newLife.constraints = [SKConstraint.positionX(xRange, y:yRange)]
             newLife.physicsBody = SKPhysicsBody(rectangleOf: newLife.size)
@@ -522,27 +575,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if currentGameState == gameState.preGame {
             startGame()
-        } 
-        //TODO: resize buttons on click. arghhh
-        // else {
-        //     for touch: AnyObject in touches {
-        //         let pointOfTouch = touch.location(in: self)
-        //         let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
-        //         let scaleDown = SKAction.scale(to: 1, duration: 0.2)
-        //         let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
-        //         print("touch is at", pointOfTouch)
-        //         print("scissors button is at size", addScissorsButton.size)
-        //         if addRockButton.contains(pointOfTouch) {
-        //             addRockButton.run(scaleSequence)
-        //         }
-        //         if addPaperButton.contains(pointOfTouch) {
-        //             addPaperButton.run(scaleSequence)
-        //         }
-        //         if addScissorsButton.contains(pointOfTouch) {
-        //             addScissorsButton.run(scaleSequence)
-        //         }
-        //     }
-        // }
+        }
+        
+        else if currentGameState == gameState.inGame {
+            if let touch = touches.first {
+                let pointOfTouch = touch.location(in: self)
+                    if self.currentEditState == editState.rock {
+                        self.spawnNewLife(name: "rock", physicsBody: BodyType.Rock, count: 1, location: pointOfTouch)
+                        population += 1
+                        rockPopulation += 1
+                    } else if self.currentEditState == editState.paper {
+                        self.spawnNewLife(name: "paper", physicsBody: BodyType.Paper, count: 1, location: pointOfTouch)
+                        population += 1
+                        paperPopulation += 1
+                    } else if self.currentEditState == editState.scissors {
+                        self.spawnNewLife(name: "scissors", physicsBody: BodyType.Scissors, count: 1, location: pointOfTouch)
+                        population += 1
+                        scissorsPopulation += 1
+                    }
+            }
+         }
     }
 
     

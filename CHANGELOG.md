@@ -2,6 +2,24 @@
 
 ---
 
+## 07092021
+
+### Added
+
+- new "add mode" buttons with green checkmark to signal which player can be added
+
+### Changed
+
+- add item buttons to toggle add mode state and deposit new player at point of touch rather than random location
+
+### Removed
+
+- none
+
+### Fixed
+
+- none
+
 ## 05282021
 
 ### Added

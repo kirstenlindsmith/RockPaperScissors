@@ -12,10 +12,10 @@ import SpriteKit
 func drawCircle(on: GameScene, at: CGPoint, color: SKColor, size: CGFloat) {
     let Circle = SKShapeNode(circleOfRadius: size) //size
     Circle.position = at //midpoint
+    Circle.zPosition = CGFloat(101)
     Circle.name = "highlightCircle"
     Circle.strokeColor = color
     Circle.fillColor = color
-    Circle.glowWidth = 5.0
     Circle.blendMode = SKBlendMode.multiply
     on.addChild(Circle)
 }
