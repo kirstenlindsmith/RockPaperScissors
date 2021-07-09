@@ -23,6 +23,7 @@
 		B8CDBC11223773290040DF41 /* Superboy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC10223773290040DF41 /* Superboy.mp3 */; };
 		B8CDBC13223774E40040DF41 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDBC12223774E40040DF41 /* appIcon.png */; };
 		E444DD4026617CCE006A6327 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E444DD3F26617CCE006A6327 /* SKButtonNode.swift */; };
+		E47D2459268F6BEA00C5B403 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D2458268F6BE900C5B403 /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		B8CDBC10223773290040DF41 /* Superboy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Superboy.mp3; sourceTree = "<group>"; };
 		B8CDBC12223774E40040DF41 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
 		E444DD3F26617CCE006A6327 /* SKButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
+		E47D2458268F6BE900C5B403 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				B8C9C99D222A47FD009B9E10 /* LaunchScreen.storyboard */,
 				B8C9C9A0222A47FD009B9E10 /* Info.plist */,
 				B8CDBC12223774E40040DF41 /* appIcon.png */,
+				E47D2458268F6BE900C5B403 /* Helpers.swift */,
 				E444DD3F26617CCE006A6327 /* SKButtonNode.swift */,
 			);
 			path = RockPaperScissors;
@@ -190,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8CDBC0D2236E2B60040DF41 /* MainMenuScene.swift in Sources */,
+				E47D2459268F6BEA00C5B403 /* Helpers.swift in Sources */,
 				B8C9C995222A47FA009B9E10 /* GameScene.swift in Sources */,
 				B8C9C997222A47FA009B9E10 /* GameViewController.swift in Sources */,
 				E444DD4026617CCE006A6327 /* SKButtonNode.swift in Sources */,
